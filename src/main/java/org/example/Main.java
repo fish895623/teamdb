@@ -8,25 +8,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 
 public class Main {
   private static final Logger log = LoggerFactory.getLogger(Main.class);
 
   public static void main(String[] args) {
-    Properties properties = new Properties();
-
-    try (InputStream input = Main.class.getClassLoader().getResourceAsStream("config.properties")) {
-      properties.load(input);
-    } catch (IOException e) {
-      log.warn(e.getMessage());
-    }
-
-    log.info("Application Name: {}", properties.getProperty("hello"));
-
     Frame frame = new Frame("AWT Example");
 
     frame.setSize(300, 200);
