@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -77,14 +78,13 @@ public class DatabaseManager {
   /**
    * Create migration table if not exists
    *
-   * @return boolean
    * @throws IOException
    */
-  public static boolean createMigrationTable() throws IOException {
+  public static void createMigrationTable() throws IOException {
     try (Connection conn = DatabaseManager.getInstance().getConnection()) {
       String sql =
           "CREATE TABLE IF NOT EXISTS migration (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) NOT NULL)";
-      return conn.createStatement().execute(sql);
+      conn.createStatement().execute(sql);
     } catch (SQLException e) {
       throw new IOException("Failed to create migration table", e);
     }
@@ -92,11 +92,11 @@ public class DatabaseManager {
 
   /**
    * Get all migration files by human order
-   *
    */
   public static List<Path> getMigrationFiles() throws IOException {
-    try (Stream<Path> paths = Files.walk(
-        Paths.get(DatabaseManager.class.getClassLoader().getResource("migration").toURI()))) {
+    try (Stream<Path> paths = Files.walk(Paths.get(
+        Objects.requireNonNull(DatabaseManager.class.getClassLoader().getResource("migration"))
+            .toURI()))) {
       return paths.filter(Files::isRegularFile).collect(Collectors.toList());
     } catch (URISyntaxException e) {
       throw new IOException("Invalid URI syntax", e);
