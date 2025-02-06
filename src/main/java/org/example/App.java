@@ -1,8 +1,8 @@
 package org.example;
 
-import org.example.database.UserDB;
-import org.example.model.User;
-import org.example.widgets.UserTableModel;
+import org.example.database.HospitalDB;
+import org.example.model.Hospital;
+import org.example.widgets.HospitalTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.List;
 
 public class App extends Frame implements KeyListener {
   private static final Logger log = LoggerFactory.getLogger(App.class);
@@ -25,7 +26,7 @@ public class App extends Frame implements KeyListener {
     addKeyListener(this);
 
     // list from UserDB
-    var users = new UserDB().getAll();
+    List<Hospital> users = new HospitalDB().getAll();
 
     JTable table = getJTable(users);
 
@@ -34,8 +35,8 @@ public class App extends Frame implements KeyListener {
     setVisible(true);
   }
 
-  private static JTable getJTable(java.util.List<User> users) {
-    UserTableModel userTableModel = new UserTableModel(users);
+  private static JTable getJTable(List<Hospital> users) {
+    HospitalTableModel userTableModel = new HospitalTableModel(users);
     JTable table = new JTable(userTableModel);
 
     table.addMouseListener(new MouseAdapter() {
