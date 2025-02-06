@@ -32,15 +32,10 @@ public class App extends Frame {
           KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
       if (!(focusedComponent instanceof JTextComponent)) {
-        if (e.getID() == KeyEvent.KEY_TYPED) {
-          log.info("Key Typed: {}", e.getKeyChar());
-        } else if (e.getID() == KeyEvent.KEY_PRESSED) {
-          log.info("Key Pressed: {}", e.getKeyChar());
+        if (e.getID() == KeyEvent.KEY_PRESSED) {
           if (e.getKeyCode() == KeyEvent.VK_Q) {
             System.exit(0);
           }
-        } else if (e.getID() == KeyEvent.KEY_RELEASED) {
-          log.info("Key Released: {}", e.getKeyChar());
         }
       }
 
