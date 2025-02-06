@@ -16,6 +16,7 @@ import java.util.List;
 
 public class App extends Frame {
   private static final Logger log = LoggerFactory.getLogger(App.class);
+  private static App instance;
   Button button = new Button("New Hospital");
   Button refreshButton = new Button("Refresh");
   List<Hospital> users = new HospitalDB().getAll();
@@ -63,6 +64,17 @@ public class App extends Frame {
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
     setVisible(true);
+  }
+
+  public static App getInstance() throws SQLException {
+    if (instance == null) {
+      instance = new App();
+    }
+    return instance;
+  }
+
+  public void receiveEvent() {
+    log.info("Event received");
   }
 
   private JTable getJTable(List<Hospital> users) {

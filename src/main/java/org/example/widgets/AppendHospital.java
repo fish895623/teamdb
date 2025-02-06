@@ -1,21 +1,25 @@
 package org.example.widgets;
 
+import org.example.App;
 import org.example.model.Hospital;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
+import java.sql.SQLException;
 
 /**
  * This class is responsible for appending a new hospital to the database.
  */
 public class AppendHospital extends Frame {
   private static final Logger log = LoggerFactory.getLogger(AppendHospital.class);
-  private TextField hospitalName;
-  private TextField hospitalAddress;
-  private TextField hospitalContactNumber;
-  private Button submitButton;
-  private Button cancelButton;
+  private final TextField hospitalName;
+  private final TextField hospitalAddress;
+  private final TextField hospitalContactNumber;
+  private final Button submitButton;
+  private final Button cancelButton;
+
+
 
   public AppendHospital() {
     super("Append Hospital");
@@ -65,6 +69,12 @@ public class AppendHospital extends Frame {
       new org.example.database.HospitalDB().insert(hospital);
     } catch (Exception e) {
       log.error("Error inserting hospital", e);
+    }
+
+    try {
+      App.getInstance().receiveEvent();
+    } catch (SQLException ex) {
+      throw new RuntimeException(ex);
     }
 
     dispose();
