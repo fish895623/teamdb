@@ -17,36 +17,10 @@ public class Main {
     try {
       DatabaseManager.migrate();
     } catch (IOException e) {
-      log.error("databaes migration failed", e);
+      log.error("database migration failed", e);
       return;
     }
 
-    Frame frame = new Frame("AWT Example");
-
-    frame.setSize(300, 200);
-    frame.setVisible(true);
-
-    frame.addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent windowEvent) {
-        System.exit(0);
-      }
-    });
-
-    frame.addKeyListener(new KeyListener() {
-      @Override
-      public void keyTyped(KeyEvent e) {
-        System.out.println("Key Typed: " + e.getKeyChar());
-      }
-
-      @Override
-      public void keyPressed(KeyEvent e) {
-        System.out.println("Key Pressed: " + e.getKeyChar());
-      }
-
-      @Override
-      public void keyReleased(KeyEvent e) {
-        System.out.println("Key Released: " + e.getKeyChar());
-      }
-    });
+    new App();
   }
 }
