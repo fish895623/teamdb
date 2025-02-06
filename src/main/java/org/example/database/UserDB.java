@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class UserDB {
@@ -24,19 +23,12 @@ public class UserDB {
     }
   }
 
-  private int userID;
-  private String name;
-  private Date birthDate;
-  private char gender;
-  private String contactNumber;
-  private String password;
-  private Connection db = DatabaseManager.getInstance().getConnection();
+  private final Connection db = DatabaseManager.getInstance().getConnection();
 
   public UserDB() throws SQLException {
   }
 
   public List<User> getAll() throws SQLException {
-    // map on received data
     List<User> users = new ArrayList<>();
     Statement statement = db.createStatement();
     ResultSet resultSet = statement.executeQuery("SELECT * FROM User");
