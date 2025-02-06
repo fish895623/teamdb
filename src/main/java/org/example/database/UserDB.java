@@ -14,15 +14,6 @@ import java.util.List;
 
 public class UserDB {
   private static final Logger log = LoggerFactory.getLogger(UserDB.class);
-
-  static {
-    try {
-      Class.forName("com.mysql.cj.jdbc.Driver");
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   private final Connection db = DatabaseManager.getInstance().getConnection();
 
   public UserDB() throws SQLException {
