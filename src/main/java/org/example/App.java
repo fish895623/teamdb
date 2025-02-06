@@ -27,26 +27,25 @@ public class App extends Frame {
     });
 
     /* Keyboard Event Handling */
-    KeyboardFocusManager
-        .getCurrentKeyboardFocusManager()
-        .addKeyEventDispatcher(e -> {
-          Component focusedComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+      Component focusedComponent =
+          KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
-          if (!(focusedComponent instanceof JTextComponent)) {
-            if (e.getID() == KeyEvent.KEY_TYPED) {
-              log.info("Key Typed: {}", e.getKeyChar());
-            } else if (e.getID() == KeyEvent.KEY_PRESSED) {
-              log.info("Key Pressed: {}", e.getKeyChar());
-              if (e.getKeyCode() == KeyEvent.VK_Q) {
-                System.exit(0);
-              }
-            } else if (e.getID() == KeyEvent.KEY_RELEASED) {
-              log.info("Key Released: {}", e.getKeyChar());
-            }
+      if (!(focusedComponent instanceof JTextComponent)) {
+        if (e.getID() == KeyEvent.KEY_TYPED) {
+          log.info("Key Typed: {}", e.getKeyChar());
+        } else if (e.getID() == KeyEvent.KEY_PRESSED) {
+          log.info("Key Pressed: {}", e.getKeyChar());
+          if (e.getKeyCode() == KeyEvent.VK_Q) {
+            System.exit(0);
           }
+        } else if (e.getID() == KeyEvent.KEY_RELEASED) {
+          log.info("Key Released: {}", e.getKeyChar());
+        }
+      }
 
-          return false;
-        });
+      return false;
+    });
 
     add(button, BorderLayout.SOUTH);
     button.addActionListener(e -> {
