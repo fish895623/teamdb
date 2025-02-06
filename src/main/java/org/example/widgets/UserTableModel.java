@@ -31,21 +31,14 @@ public class UserTableModel extends AbstractTableModel {
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
     User user = users.get(rowIndex);
-    switch (columnIndex) {
-      case 0:
-        return user.userID;
-      case 1:
-        return user.name;
-      case 2:
-        return user.birthDate;
-      case 3:
-        return user.gender;
-      case 4:
-        return user.contactNumber;
-      case 5:
-        return user.password;
-      default:
-        return null;
-    }
+    return switch (columnIndex) {
+      case 0 -> user.userID;
+      case 1 -> user.name;
+      case 2 -> user.birthDate;
+      case 3 -> user.gender;
+      case 4 -> user.contactNumber;
+      case 5 -> user.password;
+      default -> null;
+    };
   }
 }
