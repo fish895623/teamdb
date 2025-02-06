@@ -7,12 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.List;
 
-public class App extends Frame implements KeyListener {
+public class App extends Frame {
   private static final Logger log = LoggerFactory.getLogger(App.class);
 
   public App() throws SQLException {
@@ -23,15 +25,38 @@ public class App extends Frame implements KeyListener {
         System.exit(0);
       }
     });
-    addKeyListener(this);
 
-    // list from UserDB
+    /* Keyboard Event Handling */
+    KeyboardFocusManager
+        .getCurrentKeyboardFocusManager()
+        .addKeyEventDispatcher(e -> {
+          Component focusedComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+
+          if (!(focusedComponent instanceof JTextComponent)) {
+            if (e.getID() == KeyEvent.KEY_TYPED) {
+              log.info("Key Typed: {}", e.getKeyChar());
+            } else if (e.getID() == KeyEvent.KEY_PRESSED) {
+              log.info("Key Pressed: {}", e.getKeyChar());
+              if (e.getKeyCode() == KeyEvent.VK_Q) {
+                System.exit(0);
+              }
+            } else if (e.getID() == KeyEvent.KEY_RELEASED) {
+              log.info("Key Released: {}", e.getKeyChar());
+            }
+          }
+
+          return false;
+        });
+
+    Button button = new Button("Click Me");
+    add(button, BorderLayout.SOUTH);
+
     List<Hospital> users = new HospitalDB().getAll();
 
     JTable table = getJTable(users);
 
     JScrollPane scrollPane = new JScrollPane(table);
-    add(scrollPane);
+    add(scrollPane, BorderLayout.CENTER);
     setVisible(true);
   }
 
@@ -51,24 +76,5 @@ public class App extends Frame implements KeyListener {
       }
     });
     return table;
-  }
-
-  @Override
-  public void keyTyped(KeyEvent e) {
-    log.info("Key Typed: {}", e.getKeyChar());
-  }
-
-  @Override
-  public void keyPressed(KeyEvent e) {
-    log.info("Key Pressed: {}", e.getKeyChar());
-
-    if (e.getKeyCode() == 'Q') {
-      System.exit(0);
-    }
-  }
-
-  @Override
-  public void keyReleased(KeyEvent e) {
-    log.info("Key Released: {}", e.getKeyChar());
   }
 }
