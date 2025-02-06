@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.database.HospitalDB;
 import org.example.model.Hospital;
+import org.example.widgets.AppendHospital;
 import org.example.widgets.HospitalTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,8 @@ public class App extends Frame {
     add(button, BorderLayout.SOUTH);
     button.addActionListener(e -> {
       log.info("Button clicked");
+      AppendHospital appendHospital = new AppendHospital();
+      appendHospital.setVisible(true);
     });
 
     List<Hospital> users = new HospitalDB().getAll();
