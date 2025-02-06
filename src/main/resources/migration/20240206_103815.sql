@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS User
 (
-    UserID        INT PRIMARY KEY,
+    UserID        INT PRIMARY KEY AUTO_INCREMENT,
     Name          VARCHAR(50)  NOT NULL,
     BirthDate     DATE,
     Gender        CHAR(1),
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS User
 
 CREATE TABLE IF NOT EXISTS HealthData
 (
-    HealthDataID           INT PRIMARY KEY,
+    HealthDataID           INT PRIMARY KEY AUTO_INCREMENT,
     UserID                 INT,
     MeasurementDateTime    DATETIME,
     Height                 FLOAT,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS HealthData
 
 CREATE TABLE IF NOT EXISTS Exercise
 (
-    ExerciseID       INT PRIMARY KEY,
+    ExerciseID       INT PRIMARY KEY AUTO_INCREMENT,
     UserID           INT,
     ExerciseDateTime DATETIME,
     ExerciseType     VARCHAR(50),
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS Exercise
 
 CREATE TABLE IF NOT EXISTS Diet
 (
-    DietID       INT PRIMARY KEY,
+    DietID       INT PRIMARY KEY AUTO_INCREMENT,
     UserID       INT,
     MealDateTime DATETIME,
     FoodName     VARCHAR(100),
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS Diet
 
 CREATE TABLE IF NOT EXISTS Hospital
 (
-    HospitalID    INT PRIMARY KEY,
+    HospitalID    INT PRIMARY KEY AUTO_INCREMENT,
     HospitalName  VARCHAR(100) NOT NULL,
     Address       VARCHAR(255),
     ContactNumber VARCHAR(20)
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS Hospital
 
 CREATE TABLE IF NOT EXISTS MedicalRecord
 (
-    MedicalRecordID INT PRIMARY KEY,
+    MedicalRecordID INT PRIMARY KEY AUTO_INCREMENT,
     UserID          INT,
     HospitalID      INT,
     VisitDateTime   DATETIME,

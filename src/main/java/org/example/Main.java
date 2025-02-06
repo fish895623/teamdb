@@ -9,11 +9,12 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main {
   private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws SQLException {
     try {
       DatabaseManager.migrate();
     } catch (IOException e) {
