@@ -6,12 +6,8 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class HospitalTableModel extends AbstractTableModel {
-  private final List<Hospital> hospitals;
+  private List<Hospital> hospitals;
   private final String[] columnNames = {"ID", "Hospital Name", "Address", "Contact Number"};
-
-  public HospitalTableModel(List<Hospital> hospitals) {
-    this.hospitals = hospitals;
-  }
 
   @Override
   public int getRowCount() {
@@ -38,5 +34,10 @@ public class HospitalTableModel extends AbstractTableModel {
       case 3 -> hospital.ContactNumber;
       default -> null;
     };
+  }
+
+  public void setHospitals(List<Hospital> hospitals) {
+    this.hospitals = hospitals;
+    fireTableDataChanged();
   }
 }

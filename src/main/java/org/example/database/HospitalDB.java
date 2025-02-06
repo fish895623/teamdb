@@ -37,4 +37,9 @@ public class HospitalDB {
 
     return data;
   }
+
+  public void insert(Hospital hospital) throws SQLException {
+    Statement statement = db.createStatement();
+    statement.executeUpdate("INSERT INTO Hospital (HospitalName, Address, ContactNumber) VALUES ('" + hospital.HospitalName + "', '" + hospital.Address + "', '" + hospital.ContactNumber + "')");
+  }
 }

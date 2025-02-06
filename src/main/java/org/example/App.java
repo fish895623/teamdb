@@ -17,6 +17,9 @@ import java.util.List;
 public class App extends Frame {
   private static final Logger log = LoggerFactory.getLogger(App.class);
   Button button = new Button("New Hospital");
+  Button refreshButton = new Button("Refresh");
+  List<Hospital> users = new HospitalDB().getAll();
+  HospitalTableModel userTableModel;
 
   public App() throws SQLException {
     super("Member Management");
@@ -44,13 +47,16 @@ public class App extends Frame {
     });
 
     add(button, BorderLayout.SOUTH);
+    add(refreshButton, BorderLayout.NORTH);
     button.addActionListener(e -> {
       log.info("Button clicked");
       AppendHospital appendHospital = new AppendHospital();
       appendHospital.setVisible(true);
     });
-
-    List<Hospital> users = new HospitalDB().getAll();
+    refreshButton.addActionListener(e -> {
+      log.info("Refresh button clicked");
+      refreshTableData();
+    });
 
     JTable table = getJTable(users);
 
@@ -59,8 +65,9 @@ public class App extends Frame {
     setVisible(true);
   }
 
-  private static JTable getJTable(List<Hospital> users) {
-    HospitalTableModel userTableModel = new HospitalTableModel(users);
+  private JTable getJTable(List<Hospital> users) {
+    userTableModel = new HospitalTableModel();
+    userTableModel.setHospitals(users);
     JTable table = new JTable(userTableModel);
 
     table.addMouseListener(new MouseAdapter() {
@@ -75,5 +82,14 @@ public class App extends Frame {
       }
     });
     return table;
+  }
+
+  private void refreshTableData() {
+    try {
+      users = new HospitalDB().getAll();
+      userTableModel.setHospitals(users);
+    } catch (SQLException e) {
+      log.error("Error refreshing table data", e);
+    }
   }
 }
