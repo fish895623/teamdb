@@ -1,6 +1,5 @@
 package org.example.widgets;
 
-import org.example.database.ExerciseDB;
 import org.example.model.Exercise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,6 @@ import java.util.List;
 
 public class ExerciseMain extends Frame {
   private static final Logger log = LoggerFactory.getLogger(ExerciseMain.class);
-  private static ExerciseMain instance;
   List<Exercise> exercises;
   ExerciseTableModel exerciseTableModel;
   Long hospitalID;
@@ -49,10 +47,10 @@ public class ExerciseMain extends Frame {
       // TODO
       // AppendExercise appendExercise = new AppendExercise();
       // appendExercise.setVisible(true);
-      
+
     });
     refreshButton.addActionListener(e -> {
-      
+
     });
     JTable table = createTable();
     JScrollPane scrollPane = new JScrollPane(table);
@@ -61,15 +59,8 @@ public class ExerciseMain extends Frame {
     setVisible(true);
   }
 
-  public static ExerciseMain getInstance() throws SQLException {
-    if (instance == null) {
-      instance = new ExerciseMain();
-    }
-    return instance;
-  }
-
-  public static void main(String[] args) throws SQLException {
-    var A = new ExerciseMain();
+  public static ExerciseMain getInstance() {
+    return LazyHolder.INSTANCE;
   }
 
   public void setHospitalID(int hospitalID) {
@@ -96,5 +87,18 @@ public class ExerciseMain extends Frame {
     });
 
     return table;
+  }
+
+
+  private static class LazyHolder {
+    private static final ExerciseMain INSTANCE;
+
+    static {
+      try {
+        INSTANCE = new ExerciseMain();
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 }

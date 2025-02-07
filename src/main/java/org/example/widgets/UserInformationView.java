@@ -29,6 +29,9 @@ public class UserInformationView extends Frame {
   private List<User> users;
 
   AppendDiet appendDiet;
+  AppendExercise appendExercise;
+  DietMain dietMain;
+    ExerciseMain exerciseMain;
 
   private UserInformationView() {
     super("User Information");
@@ -56,10 +59,10 @@ public class UserInformationView extends Frame {
       log.info("Insert Health button clicked");
     });
     insertDiet.addActionListener(e -> {
+      log.info("Insert Diet button clicked");
       appendDiet = AppendDiet.getInstance();
       appendDiet.setUserID(users.get(0).userID);
       appendDiet.setVisible(true);
-      log.info("Insert Diet button clicked");
     });
     insertExercise.addActionListener(e -> {
       log.info("Insert Exercise button clicked");
@@ -69,6 +72,9 @@ public class UserInformationView extends Frame {
     });
     displayDiet.addActionListener(e -> {
       log.info("Display Diet button clicked");
+      dietMain = DietMain.getInstance();
+      dietMain.setUserID(users.get(0).userID);
+      dietMain.setVisible(true);
     });
     displayExercise.addActionListener(e -> {
       log.info("Display Exercise button clicked");
