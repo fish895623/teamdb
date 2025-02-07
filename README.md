@@ -11,14 +11,14 @@
 ### TODO
 
 - [ ] Insert View
-  - [ ] Add Hospital
-  - [ ] Add User
+  - [x] Add Hospital
+  - [x] Add User
   - [ ] Add HealthData
   - [ ] Add Diet
   - [ ] Add Exercise
 - [ ] Select View
-  - [ ] Show Hospital
-  - [ ] Show User
+  - [x] Show Hospital
+  - [x] Show User
   - [ ] Show HealthData
-  - [ ] Show Diet
+  - [x] Show Diet
   - [ ] Show Exercise
