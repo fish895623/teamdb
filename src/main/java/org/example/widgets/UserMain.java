@@ -14,15 +14,17 @@ import java.util.List;
 
 /**
  * TODO
- * 1. display hospital information on top of the table or using super("User Management - " + hospitalName);
+ * 1. display hospital information on top of the table or using super("User
+ * Management - " + hospitalName);
  */
-public class UserMain extends Frame {
+public class UserMain extends JFrame {
   private static final Logger log = LoggerFactory.getLogger(UserMain.class);
   List<User> users;
   UserTableModel userTableModel;
   int hospitalID;
   Button button = new Button("New User");
   Button refreshButton = new Button("Refresh");
+  private UserInformationView userInformationView;
 
   private UserMain() throws SQLException {
     super("User Management");
@@ -33,6 +35,7 @@ public class UserMain extends Frame {
       public void windowClosing(WindowEvent windowEvent) {
         dispose();
       }
+
       @Override
       public void windowActivated(WindowEvent e) {
         refreshTableData();
@@ -78,7 +81,6 @@ public class UserMain extends Frame {
     return LazyHolder.INSTANCE;
   }
 
-
   public void setHospitalID(int hospitalID) {
     this.hospitalID = hospitalID;
   }
@@ -95,12 +97,20 @@ public class UserMain extends Frame {
     table.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 1) {
-          JTable target = (JTable) e.getSource();
-          int row = target.getSelectedRow();
-          int column = target.getSelectedColumn();
-          log.info("Selected row: {} column: {}", row, column);
-          // Get User Specific info alongside
+        if (e.getClickCount() == 2) {
+          JTable table = (JTable) e.getSource();
+          int row = table.getSelectedRow();
+          int val = (int) table.getModel().getValueAt(row, 0);
+
+          log.info("Double clicked on val = {}", val);
+
+          userInformationView = UserInformationView.getInstance();
+          try {
+            userInformationView.setUserID(val);
+          } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+          }
+          userInformationView.setVisible(true);
         }
       }
     });
@@ -111,6 +121,7 @@ public class UserMain extends Frame {
   public void refreshTableData() {
     try {
       users = new UserDB().findByHospitalID(hospitalID);
+      hospitalID = 1;
       userTableModel.setUsers(users);
     } catch (SQLException ex) {
       log.error("Failed to refresh user data", ex);

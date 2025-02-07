@@ -24,6 +24,10 @@ public class UserDB {
     Statement statement = db.createStatement();
     ResultSet resultSet = statement.executeQuery("SELECT * FROM User");
 
+    return getUsers(users, resultSet);
+  }
+
+  private List<User> getUsers(List<User> users, ResultSet resultSet) throws SQLException {
     while (resultSet.next()) {
       User user = new User();
       user.userID = resultSet.getInt("UserID");
@@ -31,12 +35,23 @@ public class UserDB {
       user.birthDate = resultSet.getDate("BirthDate");
       user.gender = resultSet.getString("Gender");
       user.contactNumber = resultSet.getString("ContactNumber");
-      user.password = resultSet.getString("Password");
 
       users.add(user);
     }
 
     return users;
+  }
+
+  public List<User> findByUserID(int userID) throws SQLException {
+    List<User> users = new ArrayList<>();
+    Statement statement = db.createStatement();
+    ResultSet resultSet = statement.executeQuery("""
+        SELECT UserID, Name, BirthDate, Gender, ContactNumber
+        FROM User
+        WHERE UserID =
+        """ + userID + ";");
+
+    return getUsers(users, resultSet);
   }
 
   public List<User> findByHospitalID(int HospitalID) throws SQLException {
@@ -47,26 +62,13 @@ public class UserDB {
                u.Name,
                u.BirthDate,
                u.Gender,
-               u.ContactNumber,
-               u.Password
+               u.ContactNumber
         FROM User u
                  JOIN MedicalRecord m ON u.UserID = m.UserID
         WHERE m.HospitalID =
         """ + HospitalID + ";");
 
-    while (resultSet.next()) {
-      User user = new User();
-      user.userID = resultSet.getInt("UserID");
-      user.name = resultSet.getString("Name");
-      user.birthDate = resultSet.getDate("BirthDate");
-      user.gender = resultSet.getString("Gender");
-      user.contactNumber = resultSet.getString("ContactNumber");
-      user.password = resultSet.getString("Password");
-
-      users.add(user);
-    }
-
-    return users;
+    return getUsers(users, resultSet);
   }
 
 }
