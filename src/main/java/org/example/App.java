@@ -4,6 +4,7 @@ import org.example.database.HospitalDB;
 import org.example.model.Hospital;
 import org.example.widgets.AppendHospital;
 import org.example.widgets.HospitalTableModel;
+import org.example.widgets.UserMain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,8 +89,15 @@ public class App extends Frame {
         if (e.getClickCount() == 2) {
           JTable target = (JTable) e.getSource();
           int row = target.getSelectedRow();
-          var val = table.getModel().getValueAt(row, 0);
+          int val = (int) table.getModel().getValueAt(row, 0);
           log.info("Double clicked on val = {}", val);
+          try {
+            UserMain userMain = UserMain.getInstance();
+            userMain.setHospitalID(val);
+            log.info("Opening UserMain {}", val);
+          } catch (SQLException ex) {
+            log.error("Failed to open UserMain", ex);
+          }
         }
       }
     });

@@ -6,8 +6,9 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class UserTableModel extends AbstractTableModel {
-  private final List<User> users;
-  private final String[] columnNames = {"UserID", "Name", "BirthDate", "Gender", "ContactNumber", "Password"};
+  private List<User> users;
+  private final String[] columnNames =
+      {"UserID", "Name", "BirthDate", "Gender", "ContactNumber", "Password"};
 
   public UserTableModel(List<User> users) {
     this.users = users;
@@ -40,5 +41,10 @@ public class UserTableModel extends AbstractTableModel {
       case 5 -> user.password;
       default -> null;
     };
+  }
+
+  public void setUsers(List<User> users) {
+    this.users = users;
+    fireTableDataChanged();
   }
 }

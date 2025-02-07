@@ -38,4 +38,35 @@ public class UserDB {
 
     return users;
   }
+
+  public List<User> findByHospitalID(Long HospitalID) throws SQLException {
+    List<User> users = new ArrayList<>();
+    Statement statement = db.createStatement();
+    ResultSet resultSet = statement.executeQuery("""
+        SELECT u.UserID,
+               u.Name,
+               u.BirthDate,
+               u.Gender,
+               u.ContactNumber,
+               u.Password
+        FROM User u
+                 JOIN MedicalRecord m ON u.UserID = m.UserID
+        WHERE m.HospitalID =
+        """ + HospitalID + ";");
+
+    while (resultSet.next()) {
+      User user = new User();
+      user.userID = resultSet.getInt("UserID");
+      user.name = resultSet.getString("Name");
+      user.birthDate = resultSet.getDate("BirthDate");
+      user.gender = resultSet.getString("Gender");
+      user.contactNumber = resultSet.getString("ContactNumber");
+      user.password = resultSet.getString("Password");
+
+      users.add(user);
+    }
+
+    return users;
+  }
+
 }
