@@ -11,6 +11,9 @@ public class ExerciseTableModel extends AbstractTableModel {
     private final String[] columnNames = { "ExerciseID", "UserID", "ExerciseDateTime", "ExerciseType", "Duration",
             "CaloriesBurned" };
 
+    ExerciseTableModel() {
+    }
+
     public ExerciseTableModel(List<Exercise> exercises) {
         this.exercises = exercises;
     }

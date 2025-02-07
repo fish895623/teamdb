@@ -79,10 +79,6 @@ public class DietMain extends Frame {
     add(scrollPane, BorderLayout.CENTER);
   }
 
-  public static void main(String[] args) throws SQLException {
-    var A = new DietMain();
-  }
-
   public static DietMain getInstance() {
     return LazyHolder.INSTANCE;
   }

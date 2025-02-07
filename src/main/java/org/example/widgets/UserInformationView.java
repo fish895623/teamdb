@@ -31,7 +31,7 @@ public class UserInformationView extends Frame {
   AppendDiet appendDiet;
   AppendExercise appendExercise;
   DietMain dietMain;
-    ExerciseMain exerciseMain;
+  ExerciseMain exerciseMain;
 
   private UserInformationView() {
     super("User Information");
@@ -74,10 +74,14 @@ public class UserInformationView extends Frame {
       log.info("Display Diet button clicked");
       dietMain = DietMain.getInstance();
       dietMain.setUserID(users.get(0).userID);
+      log.info("User ID: {}", users.get(0).userID);
       dietMain.setVisible(true);
     });
     displayExercise.addActionListener(e -> {
       log.info("Display Exercise button clicked");
+      exerciseMain = ExerciseMain.getInstance();
+      exerciseMain.setUserID(users.get(0).userID);
+      exerciseMain.setVisible(true);
     });
     medicalRecord.addActionListener(e -> {
       log.info("Medical Record button clicked");
@@ -92,7 +96,6 @@ public class UserInformationView extends Frame {
     panel0.add(birthDateLabel);
     panel0.add(genderLabel);
     panel0.add(contactLabel);
-
 
     Panel panel = new Panel();
     panel.add(panel0);
@@ -122,7 +125,6 @@ public class UserInformationView extends Frame {
 
     repaint();
   }
-
 
   private static class LazyHolder {
     private static final UserInformationView INSTANCE = new UserInformationView();
