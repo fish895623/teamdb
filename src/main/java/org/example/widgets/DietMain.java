@@ -19,12 +19,12 @@ public class DietMain extends Frame {
   List<Diet> diets;
   DietTableModel dietTableModel;
   Long hospitalID;
-  Button button = new Button("New Diet ");
+  Button button = new Button("New Diet");
   Button refreshButton = new Button("Refresh");
   int userID = 0;
 
   DietMain() throws SQLException {
-    super("Diet  Management");
+    super("Diet Management");
     setSize(600, 400);
 
     addWindowListener(new WindowAdapter() {
