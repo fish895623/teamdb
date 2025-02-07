@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -25,9 +27,15 @@ public class ExerciseMain extends Frame {
     super("Exercise Management");
     setSize(600, 400);
 
+    addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent windowEvent) {
+        dispose();
+      }
+    });
+
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-      Component focusedComponent =
-          KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+      Component focusedComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
       if (!(focusedComponent instanceof JTextComponent)) {
         if (e.getID() == KeyEvent.KEY_PRESSED) {
