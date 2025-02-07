@@ -1,7 +1,9 @@
 package org.example.database;
 
 import org.example.DatabaseManager;
+import org.example.model.Hospital;
 import org.example.model.MedicalRecord;
+import org.example.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,12 +32,17 @@ public class MedicalRecordDB {
       d.UserID = resultSet.getInt("UserID");
       d.HospitalID = resultSet.getInt("HospitalID");
       d.VisitDateTime = resultSet.getDate("VisitDateTime");
-      d.Diagnosis = resultSet.getInt("Diagnosis");
-      d.Prescription = resultSet.getInt("Prescription");
+      d.Diagnosis = resultSet.getString("Diagnosis");
+      d.Prescription = resultSet.getString("Prescription");
 
       data.add(d);
     }
 
     return data;
   }
+  public void insert(MedicalRecord medicalRecord) throws SQLException {
+	    Statement statement = db.createStatement();
+	    statement.executeUpdate("INSERT INTO MedicalRecord (HospitalID,UserID,VisitDateTime, Diagnosis, Prescription) VALUES ('" + medicalRecord.HospitalID + "', '"+ medicalRecord.UserID+"', '"+ medicalRecord.Now+ "', '"  + medicalRecord.Diagnosis + "', '" + medicalRecord.Prescription + "')");
+	  }
+ 
 }
