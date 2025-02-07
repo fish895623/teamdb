@@ -9,6 +9,7 @@ public class MedicalRecord {
   public int UserID;
   public int HospitalID;
   public Date VisitDateTime;
-  public int Diagnosis;
-  public int Prescription;
+  public String Diagnosis;
+  public String Prescription;
+  public LocalDateTime Now;
 }
