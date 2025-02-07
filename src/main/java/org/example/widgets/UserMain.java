@@ -19,7 +19,7 @@ public class UserMain extends Frame {
   private static UserMain instance;
   List<User> users;
   UserTableModel userTableModel;
-  Long hospitalID;
+  int hospitalID;
   Button button = new Button("New User");
   Button refreshButton = new Button("Refresh");
 
@@ -33,8 +33,8 @@ public class UserMain extends Frame {
 
       if (!(focusedComponent instanceof JTextComponent)) {
         if (e.getID() == KeyEvent.KEY_PRESSED) {
-          if (e.getKeyCode() == KeyEvent.VK_Q) {
-            System.exit(0);
+          if (e.getKeyCode() == KeyEvent.VK_R) {
+            dispose();
           }
         }
       }
@@ -78,7 +78,7 @@ public class UserMain extends Frame {
   }
 
   public void setHospitalID(int hospitalID) {
-    this.hospitalID = 1L;
+    this.hospitalID = hospitalID;
   }
 
   public void receiveEvent() {

@@ -94,6 +94,7 @@ public class App extends Frame {
           try {
             UserMain userMain = UserMain.getInstance();
             userMain.setHospitalID(val);
+            userMain.setVisible(true);
             log.info("Opening UserMain {}", val);
           } catch (SQLException ex) {
             log.error("Failed to open UserMain", ex);
