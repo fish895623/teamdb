@@ -73,8 +73,6 @@ public class UserMain extends JFrame {
     JTable table = getJTable(users);
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
-
-    setVisible(true);
   }
 
   public static UserMain getInstance() {
