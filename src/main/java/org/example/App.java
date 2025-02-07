@@ -19,9 +19,9 @@ public class App extends Frame {
   private static final Logger log = LoggerFactory.getLogger(App.class);
   Button button = new Button("New Hospital");
   Button refreshButton = new Button("Refresh");
-  List<Hospital> hospitals = new HospitalDB().getAll();
+  List<Hospital> hospitals;
   HospitalTableModel hospitalTableModel;
-  private UserMain userMain;
+  private final UserMain userMain = UserMain.getInstance();
 
   private App() throws SQLException {
     super("Member Management");
@@ -59,7 +59,7 @@ public class App extends Frame {
       log.info("Refresh button clicked");
       refreshTableData();
     });
-
+    hospitals = new HospitalDB().getAll();
     JTable table = getJTable(hospitals);
 
     JScrollPane scrollPane = new JScrollPane(table);
@@ -88,7 +88,6 @@ public class App extends Frame {
           int row = target.getSelectedRow();
           int val = (int) table.getModel().getValueAt(row, 0);
           log.info("Double clicked on val = {}", val);
-          userMain = UserMain.getInstance();
           userMain.setHospitalID(val);
           userMain.setVisible(true);
           log.info("Opening UserMain {}", val);
