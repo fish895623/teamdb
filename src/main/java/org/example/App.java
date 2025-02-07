@@ -17,11 +17,11 @@ import java.util.List;
 
 public class App extends Frame {
   private static final Logger log = LoggerFactory.getLogger(App.class);
+  private final UserMain userMain = UserMain.getInstance();
   Button button = new Button("New Hospital");
   Button refreshButton = new Button("Refresh");
   List<Hospital> hospitals;
   HospitalTableModel hospitalTableModel;
-  private final UserMain userMain = UserMain.getInstance();
 
   private App() throws SQLException {
     super("Member Management");
@@ -64,7 +64,7 @@ public class App extends Frame {
 
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
-    setVisible(true);
+    //    setVisible(true);
   }
 
   public static App getInstance() {
