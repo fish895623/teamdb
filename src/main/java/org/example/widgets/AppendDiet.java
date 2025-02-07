@@ -122,11 +122,7 @@ public class AppendDiet extends JFrame {
         }
 
         // 이벤트 전송
-        try {
-            App.getInstance().receiveEvent();
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
+        App.getInstance().receiveEvent();
 
         dispose();
     }
