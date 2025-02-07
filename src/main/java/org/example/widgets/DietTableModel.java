@@ -5,52 +5,46 @@ import org.example.model.Diet;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * @author kimkyungmin12
+ * @author fish895623
+ */
 public class DietTableModel extends AbstractTableModel {
-    private final List<Diet> diets;
-    private final String[] columnNames = {"DietID", "UserID", "MealDateTime", "FoodName", "Quantity", "Calories"};
+  private List<Diet> diets;
+  private final String[] columnNames =
+      {"DietID", "UserID", "MealDateTime", "FoodName", "Quantity", "Calories"};
 
-    public DietTableModel(List<Diet> diets) {
-        this.diets = diets;
-    }
+  @Override
+  public int getRowCount() {
+    return diets.size();
+  }
 
-    @Override
-    public int getRowCount() {
-        return diets.size();
-    }
+  @Override
+  public int getColumnCount() {
+    return columnNames.length;
+  }
 
-    @Override
-    public int getColumnCount() {
-        return columnNames.length;
-    }
+  @Override
+  public String getColumnName(int column) {
+    return columnNames[column];
+  }
 
-    @Override
-    public String getColumnName(int column) {
-        return columnNames[column];
-    }
+  @Override
+  public Object getValueAt(int rowIndex, int columnIndex) {
+    Diet diet = diets.get(rowIndex);
+    return switch (columnIndex) {
+      case 0 -> diet.DietID;
+      case 1 -> diet.UserID;
+      case 2 -> diet.MealDateTime;
+      case 3 -> diet.FoodName;
+      case 4 -> diet.Quantity;
+      case 5 -> diet.Calories;
+      default -> null;
+    };
+  }
 
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        Diet diet = diets.get(rowIndex);
-        switch (columnIndex) {
-            case 0:
-                return diet.DietID;
-
-            case 1:
-                return diet.UserID;
-
-            case 2:
-                return diet.MealDateTime;
-
-            case 3:
-                return diet.FoodName;
-
-            case 4:
-                return diet.Quantity;
-
-            case 5:
-                return diet.Calories;
-            default:
-                return null;
-        }
-    }
+  public void setData(List<Diet> diets) {
+    this.diets = diets;
+    fireTableDataChanged();
+  }
 }
