@@ -64,7 +64,7 @@ public class App extends Frame {
 
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
-    //    setVisible(true);
+    setVisible(true);
   }
 
   public static App getInstance() {
