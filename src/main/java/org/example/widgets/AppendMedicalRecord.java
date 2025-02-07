@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 /**
@@ -63,9 +62,9 @@ public class AppendMedicalRecord extends Frame {
 
     String ID = hospitalID.getText();
     String uID = userID.getText();
-    String dino= diagnosis.getText();
+    String dino = diagnosis.getText();
     String prtion = prescription.getText();
-    
+
 
     MedicalRecord medical = new MedicalRecord();
     //medical.UserID = userID;
@@ -74,9 +73,9 @@ public class AppendMedicalRecord extends Frame {
     //medical.VisitDateTime = visitDateTime;
     medical.Diagnosis = dino;
     medical.Prescription = prtion;
-    medical.Now = LocalDateTime.now();;
+    medical.Now = LocalDateTime.now();
     //medical.MedicalRecordID = medicalRecordID;
-    
+
 
 
     try {
@@ -85,11 +84,7 @@ public class AppendMedicalRecord extends Frame {
       log.error("Error inserting medical", e);
     }
 
-    try {
-      App.getInstance().receiveEvent();
-    } catch (SQLException ex) {
-      throw new RuntimeException(ex);
-    }
+    App.getInstance().receiveEvent();
 
     dispose();
   }
