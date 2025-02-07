@@ -19,8 +19,8 @@ public class App extends Frame {
   private static App instance;
   Button button = new Button("New Hospital");
   Button refreshButton = new Button("Refresh");
-  List<Hospital> users = new HospitalDB().getAll();
-  HospitalTableModel userTableModel;
+  List<Hospital> hospitals = new HospitalDB().getAll();
+  HospitalTableModel hospitalTableModel;
 
   public App() throws SQLException {
     super("Member Management");
@@ -59,7 +59,7 @@ public class App extends Frame {
       refreshTableData();
     });
 
-    JTable table = getJTable(users);
+    JTable table = getJTable(hospitals);
 
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
@@ -78,9 +78,9 @@ public class App extends Frame {
   }
 
   private JTable getJTable(List<Hospital> users) {
-    userTableModel = new HospitalTableModel();
-    userTableModel.setHospitals(users);
-    JTable table = new JTable(userTableModel);
+    hospitalTableModel = new HospitalTableModel();
+    hospitalTableModel.setHospitals(users);
+    JTable table = new JTable(hospitalTableModel);
 
     table.addMouseListener(new MouseAdapter() {
       @Override
@@ -98,8 +98,8 @@ public class App extends Frame {
 
   private void refreshTableData() {
     try {
-      users = new HospitalDB().getAll();
-      userTableModel.setHospitals(users);
+      hospitals = new HospitalDB().getAll();
+      hospitalTableModel.setHospitals(hospitals);
     } catch (SQLException e) {
       log.error("Error refreshing table data", e);
     }
