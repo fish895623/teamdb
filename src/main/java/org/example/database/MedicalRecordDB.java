@@ -1,9 +1,7 @@
 package org.example.database;
 
 import org.example.DatabaseManager;
-import org.example.model.Hospital;
 import org.example.model.MedicalRecord;
-import org.example.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
