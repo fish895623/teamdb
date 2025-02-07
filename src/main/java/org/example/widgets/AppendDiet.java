@@ -12,12 +12,10 @@ import java.text.ParseException;
 public class AppendDiet extends JFrame {
   private static final Logger log = LoggerFactory.getLogger(AppendDiet.class);
 
-
   private final JTextField MealDateTime;
   private final JTextField FoodName;
   private final JTextField Quantity;
   private final JTextField Calories;
-
 
   private final JButton submitButton;
   private final JButton cancelButton;
