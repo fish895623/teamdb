@@ -2,6 +2,7 @@ package org.example.database;
 
 import org.example.DatabaseManager;
 import org.example.model.Exercise;
+import org.example.model.MedicalRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +30,7 @@ public class ExerciseDB {
 
       exercise.CaloriesBurned = resultSet.getInt("CaloriesBurned");
       exercise.Duration = resultSet.getInt("Duration");
-      exercise.ExerciseDateTime = resultSet.getDate("ExerciseDateTime");
+      exercise.ExerciseDateTime = resultSet.getDate("ExerciseDateTime").toString();
       exercise.ExerciseID = resultSet.getInt("ExerciseID");
       exercise.ExerciseType = resultSet.getString("ExerciseType");
       exercise.UserID = resultSet.getInt("UserID");
@@ -39,4 +40,9 @@ public class ExerciseDB {
 
     return data;
   }
+  public void insert(Exercise exercise) throws SQLException {
+	    Statement statement = db.createStatement();
+	    statement.executeUpdate("INSERT INTO Exercise (UserID,ExerciseDateTime, ExerciseType, Duration,CaloriesBurned) VALUES ('" + exercise.UserID+"', '"+ exercise.ExerciseDateTime+ "', '"+  exercise.ExerciseType+ "', '" + exercise.Duration + "', '" +exercise.CaloriesBurned + "')");
+	  }
+
 }

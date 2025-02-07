@@ -8,8 +8,8 @@ import java.util.List;
 
 public class ExerciseTableModel extends AbstractTableModel {
     private List<Exercise> exercises;
-    private final String[] columnNames =
-            {"ExerciseID", "UserID", "ExerciseDateTime", "ExerciseType", "Duration", "CaloriesBurned"};
+    private final String[] columnNames = { "ExerciseID", "UserID", "ExerciseDateTime", "ExerciseType", "Duration",
+            "CaloriesBurned" };
 
     public ExerciseTableModel(List<Exercise> exercises) {
         this.exercises = exercises;
@@ -50,4 +50,3 @@ public class ExerciseTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 }
-
