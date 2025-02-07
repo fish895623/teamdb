@@ -39,7 +39,7 @@ public class UserDB {
     return users;
   }
 
-  public List<User> findByHospitalID(Long HospitalID) throws SQLException {
+  public List<User> findByHospitalID(int HospitalID) throws SQLException {
     List<User> users = new ArrayList<>();
     Statement statement = db.createStatement();
     ResultSet resultSet = statement.executeQuery("""

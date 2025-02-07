@@ -10,6 +10,8 @@ public class UserTableModel extends AbstractTableModel {
   private final String[] columnNames =
       {"UserID", "Name", "BirthDate", "Gender", "ContactNumber", "Password"};
 
+  public UserTableModel() {
+  }
   public UserTableModel(List<User> users) {
     this.users = users;
   }

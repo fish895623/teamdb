@@ -8,24 +8,36 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * TODO
+ * 1. display hospital information on top of the table or using super("User Management - " + hospitalName);
+ */
 public class UserMain extends Frame {
   private static final Logger log = LoggerFactory.getLogger(UserMain.class);
-  private static UserMain instance;
   List<User> users;
   UserTableModel userTableModel;
-  Long hospitalID;
+  int hospitalID;
   Button button = new Button("New User");
   Button refreshButton = new Button("Refresh");
 
-  UserMain() throws SQLException {
+  private UserMain() throws SQLException {
     super("User Management");
     setSize(600, 400);
+
+    addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent windowEvent) {
+        dispose();
+      }
+      @Override
+      public void windowActivated(WindowEvent e) {
+        refreshTableData();
+      }
+    });
 
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
       Component focusedComponent =
@@ -33,8 +45,8 @@ public class UserMain extends Frame {
 
       if (!(focusedComponent instanceof JTextComponent)) {
         if (e.getID() == KeyEvent.KEY_PRESSED) {
-          if (e.getKeyCode() == KeyEvent.VK_Q) {
-            System.exit(0);
+          if (e.getKeyCode() == KeyEvent.VK_R) {
+            dispose();
           }
         }
       }
@@ -52,43 +64,34 @@ public class UserMain extends Frame {
     });
     refreshButton.addActionListener(e -> {
       log.info("Refresh button clicked");
-      try {
-        users = new UserDB().findByHospitalID(hospitalID);
-        userTableModel.setUsers(users);
-      } catch (SQLException ex) {
-        log.error("Failed to refresh user data", ex);
-      }
+      refreshTableData();
     });
-    JTable table = createTable();
+    users = new UserDB().findByHospitalID(hospitalID);
+    JTable table = getJTable(users);
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
 
     setVisible(true);
   }
 
-  public static UserMain getInstance() throws SQLException {
-    if (instance == null) {
-      instance = new UserMain();
-    }
-    return instance;
+  public static UserMain getInstance() {
+    return LazyHolder.INSTANCE;
   }
 
-  public static void main(String[] args) throws SQLException {
-    var A = new UserMain();
-  }
 
   public void setHospitalID(int hospitalID) {
-    this.hospitalID = 1L;
+    this.hospitalID = hospitalID;
   }
 
   public void receiveEvent() {
     log.info("Event received");
   }
 
-  private JTable createTable() throws SQLException {
-    users = new UserDB().findByHospitalID(hospitalID);
-    userTableModel = new UserTableModel(users);
+  private JTable getJTable(List<User> users) {
+    userTableModel = new UserTableModel();
+    userTableModel.setUsers(users);
     JTable table = new JTable(userTableModel);
+
     table.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -96,12 +99,33 @@ public class UserMain extends Frame {
           JTable target = (JTable) e.getSource();
           int row = target.getSelectedRow();
           int column = target.getSelectedColumn();
-          log.info("Selected row: " + row + " column: " + column);
+          log.info("Selected row: {} column: {}", row, column);
           // Get User Specific info alongside
         }
       }
     });
 
     return table;
+  }
+
+  public void refreshTableData() {
+    try {
+      users = new UserDB().findByHospitalID(hospitalID);
+      userTableModel.setUsers(users);
+    } catch (SQLException ex) {
+      log.error("Failed to refresh user data", ex);
+    }
+  }
+
+  private static class LazyHolder {
+    private static final UserMain INSTANCE;
+
+    static {
+      try {
+        INSTANCE = new UserMain();
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 }

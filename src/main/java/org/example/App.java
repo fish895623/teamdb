@@ -17,13 +17,13 @@ import java.util.List;
 
 public class App extends Frame {
   private static final Logger log = LoggerFactory.getLogger(App.class);
-  private static App instance;
   Button button = new Button("New Hospital");
   Button refreshButton = new Button("Refresh");
-  List<Hospital> hospitals = new HospitalDB().getAll();
+  List<Hospital> hospitals;
   HospitalTableModel hospitalTableModel;
+  private final UserMain userMain = UserMain.getInstance();
 
-  public App() throws SQLException {
+  private App() throws SQLException {
     super("Member Management");
     setSize(600, 400);
     addWindowListener(new WindowAdapter() {
@@ -59,7 +59,7 @@ public class App extends Frame {
       log.info("Refresh button clicked");
       refreshTableData();
     });
-
+    hospitals = new HospitalDB().getAll();
     JTable table = getJTable(hospitals);
 
     JScrollPane scrollPane = new JScrollPane(table);
@@ -67,11 +67,8 @@ public class App extends Frame {
     setVisible(true);
   }
 
-  public static App getInstance() throws SQLException {
-    if (instance == null) {
-      instance = new App();
-    }
-    return instance;
+  public static App getInstance() {
+    return LazyHolder.INSTANCE;
   }
 
   public void receiveEvent() {
@@ -91,13 +88,9 @@ public class App extends Frame {
           int row = target.getSelectedRow();
           int val = (int) table.getModel().getValueAt(row, 0);
           log.info("Double clicked on val = {}", val);
-          try {
-            UserMain userMain = UserMain.getInstance();
-            userMain.setHospitalID(val);
-            log.info("Opening UserMain {}", val);
-          } catch (SQLException ex) {
-            log.error("Failed to open UserMain", ex);
-          }
+          userMain.setHospitalID(val);
+          userMain.setVisible(true);
+          log.info("Opening UserMain {}", val);
         }
       }
     });
@@ -110,6 +103,19 @@ public class App extends Frame {
       hospitalTableModel.setHospitals(hospitals);
     } catch (SQLException e) {
       log.error("Error refreshing table data", e);
+    }
+  }
+
+
+  private static class LazyHolder {
+    private static final App INSTANCE;
+
+    static {
+      try {
+        INSTANCE = new App();
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
     }
   }
 }
