@@ -73,8 +73,6 @@ public class UserMain extends JFrame {
     JTable table = getJTable(users);
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
-
-    setVisible(true);
   }
 
   public static UserMain getInstance() {
@@ -120,8 +118,8 @@ public class UserMain extends JFrame {
 
   public void refreshTableData() {
     try {
+      log.info("Refreshing user data for hospitalID = {}", hospitalID);
       users = new UserDB().findByHospitalID(hospitalID);
-      hospitalID = 1;
       userTableModel.setUsers(users);
     } catch (SQLException ex) {
       log.error("Failed to refresh user data", ex);

@@ -28,6 +28,8 @@ public class UserInformationView extends Frame {
   Button medicalRecord;
   private List<User> users;
 
+  AppendDiet appendDiet;
+
   private UserInformationView() {
     super("User Information");
     setSize(300, 400);
@@ -54,6 +56,9 @@ public class UserInformationView extends Frame {
       log.info("Insert Health button clicked");
     });
     insertDiet.addActionListener(e -> {
+      appendDiet = AppendDiet.getInstance();
+      appendDiet.setUserID(users.get(0).userID);
+      appendDiet.setVisible(true);
       log.info("Insert Diet button clicked");
     });
     insertExercise.addActionListener(e -> {

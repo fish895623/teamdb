@@ -15,15 +15,13 @@ public class AppendDiet extends JFrame {
 
   private final JTextField MealDateTime;
   private final JTextField FoodName;
-  private final JTextField UserID;
   private final JTextField Quantity;
   private final JTextField Calories;
 
 
   private final JButton submitButton;
   private final JButton cancelButton;
-
-
+  public int userId = 0;
 
   public AppendDiet() {
     super("Append Diet");
@@ -38,7 +36,6 @@ public class AppendDiet extends JFrame {
 
     // 컴포넌트 생성
 
-    UserID = new JTextField(10);
     FoodName = new JTextField(10);
     Quantity = new JTextField(10);
     Calories = new JTextField(10);
@@ -52,7 +49,6 @@ public class AppendDiet extends JFrame {
     // UI 추가 (GridBagLayout 사용)
     int row = 0;
 
-    addLabelAndComponent("User ID:", UserID, gbc, row++);
     addLabelAndComponent("FoodName:", FoodName, gbc, row++);
     addLabelAndComponent("Quantity:", Quantity, gbc, row++);
     addLabelAndComponent("Calories:", Calories, gbc, row++);
@@ -87,6 +83,10 @@ public class AppendDiet extends JFrame {
     return LazyHolder.INSTANCE;
   }
 
+  public void setUserID(int userID) {
+    userId = userID;
+  }
+
   private void addLabelAndComponent(String label, JComponent component, GridBagConstraints gbc,
       int row) {
     gbc.gridx = 0;
@@ -103,7 +103,6 @@ public class AppendDiet extends JFrame {
     log.info("Submit button clicked");
 
 
-    String uID = UserID.getText();
     int MealTime = Integer.parseInt(MealDateTime.getText());
     String fName = FoodName.getText();
     String qtity = Quantity.getText();
@@ -111,7 +110,7 @@ public class AppendDiet extends JFrame {
 
     Diet diet = new Diet();
 
-    diet.UserID = Integer.parseInt(uID);
+    diet.UserID = userId;
     diet.MealDateTime = MealTime;
     diet.FoodName = fName;
     diet.Quantity = Integer.parseInt(qtity);
