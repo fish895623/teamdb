@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.awt.*;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AppendDiet extends JFrame {
   private static final Logger log = LoggerFactory.getLogger(AppendDiet.class);
@@ -100,8 +102,6 @@ public class AppendDiet extends JFrame {
   public void submitButtonClicked() throws ParseException {
     log.info("Submit button clicked");
 
-
-    int MealTime = Integer.parseInt(MealDateTime.getText());
     String fName = FoodName.getText();
     String qtity = Quantity.getText();
     String Cal = Calories.getText();
@@ -109,7 +109,14 @@ public class AppendDiet extends JFrame {
     Diet diet = new Diet();
 
     diet.UserID = userId;
-    diet.MealDateTime = MealTime;
+
+    try {
+      // TODO: Need flexible date format parser
+      diet.MealDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(MealDateTime.getText());
+    } catch (ParseException e) {
+      log.error(e.toString());
+    }
+
     diet.FoodName = fName;
     diet.Quantity = Integer.parseInt(qtity);
     diet.Calories = Integer.parseInt(Cal);
@@ -125,7 +132,6 @@ public class AppendDiet extends JFrame {
 
     dispose();
   }
-
 
   public static class LazyHolder {
     private static final AppendDiet INSTANCE = new AppendDiet();

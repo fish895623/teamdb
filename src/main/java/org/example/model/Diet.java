@@ -1,12 +1,11 @@
 package org.example.model;
 
-
-import java.sql.Date;
+import java.util.Date;
 
 public class Diet {
   public int DietID;
   public int UserID;
-  public int MealDateTime;
+  public Date MealDateTime;
   public String FoodName;
   public float Quantity;
   public int Calories;

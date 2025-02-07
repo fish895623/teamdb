@@ -32,11 +32,28 @@ public class DietMain extends Frame {
       public void windowClosing(WindowEvent windowEvent) {
         dispose();
       }
+
+      @Override
+      public void windowActivated(WindowEvent e) {
+        log.info("Window activated");
+
+        try {
+          this.refreshData();
+        } catch (SQLException e1) {
+          e1.printStackTrace();
+        }
+      }
+
+      private void refreshData() throws SQLException {
+        log.info("Refreshing data");
+        diets = new DietDB().findByUserID(userID);
+
+        repaint();
+      }
     });
 
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-      Component focusedComponent =
-          KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+      Component focusedComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
       if (!(focusedComponent instanceof JTextComponent)) {
         if (e.getID() == KeyEvent.KEY_PRESSED) {
@@ -56,7 +73,7 @@ public class DietMain extends Frame {
     });
     refreshButton.addActionListener(e -> {
     });
-    diets = new DietDB().findByUserID(userID);
+    diets = new DietDB().findByUserID(1);
     JTable table = createTable(diets);
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
@@ -88,7 +105,6 @@ public class DietMain extends Frame {
   public void setUserID(int userID) {
     this.userID = userID;
   }
-
 
   private static class LazyHolder {
     private static final DietMain INSTANCE;

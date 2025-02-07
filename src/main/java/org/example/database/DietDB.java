@@ -9,7 +9,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DietDB {
@@ -28,7 +31,13 @@ public class DietDB {
       Diet d = new Diet();
       d.DietID = resultSet.getInt("DietID");
       d.UserID = resultSet.getInt("UserID");
-      d.MealDateTime = resultSet.getInt("MealDateTime");
+
+      try {
+        d.MealDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(resultSet.getString("MealDateTime"));
+      } catch (ParseException e) {
+        log.error(e.toString());
+      }
+
       d.FoodName = resultSet.getString("FoodName");
       d.Quantity = resultSet.getInt("Quantity");
       d.Calories = resultSet.getInt("Calories");
@@ -40,6 +49,7 @@ public class DietDB {
   }
 
   public List<Diet> findByUserID(int UserID) throws SQLException {
+    log.info("Finding Diet by UserID: {}", UserID);
     List<Diet> data = new ArrayList<>();
     Statement statement = db.createStatement();
     ResultSet resultSet = statement.executeQuery("SELECT * FROM Diet WHERE UserID = " + UserID);
@@ -48,7 +58,13 @@ public class DietDB {
       Diet d = new Diet();
       d.DietID = resultSet.getInt("DietID");
       d.UserID = resultSet.getInt("UserID");
-      d.MealDateTime = resultSet.getInt("MealDateTime");
+
+      try {
+        d.MealDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(resultSet.getString("MealDateTime"));
+      } catch (ParseException e) {
+        log.error(e.toString());
+      }
+
       d.FoodName = resultSet.getString("FoodName");
       d.Quantity = resultSet.getInt("Quantity");
       d.Calories = resultSet.getInt("Calories");
@@ -62,7 +78,8 @@ public class DietDB {
   public void insert(Diet diet) throws SQLException {
     Statement statement = db.createStatement();
     statement.executeUpdate(
-        "INSERT INTO Diet (UserID,MealDateTime, FoodName, Quantity,Calories) VALUES ('" + diet.UserID + "', '" + diet.MealDateTime + "', '" + diet.FoodName + "', '" + diet.Quantity + "', '" + diet.Calories + "')");
+        "INSERT INTO Diet (UserID,MealDateTime, FoodName, Quantity,Calories) VALUES ('" + diet.UserID + "', '"
+            + diet.MealDateTime + "', '" + diet.FoodName + "', '" + diet.Quantity + "', '" + diet.Calories + "')");
   }
 
 }
