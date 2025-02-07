@@ -73,10 +73,6 @@ public class UserMain extends Frame {
     return instance;
   }
 
-  public static void main(String[] args) throws SQLException {
-    var A = new UserMain();
-  }
-
   public void setHospitalID(int hospitalID) {
     this.hospitalID = hospitalID;
   }
