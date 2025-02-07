@@ -7,18 +7,18 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class HealthDataTableModel extends AbstractTableModel {
-    private List<HealthData> healthDatas;
+    private List<HealthData> healthDataList;
     private final String[] columnNames =
             {"HealthDataID", "UserID", "MeasurementDateTime", "Height", "Weight", "BodyFatPercentage","BloodPressureSystolic","BloodPressureDiastolic"
             ,"BloodSugar","HeartRate","StressLevel"};
 
-    public HealthDataTableModel(List<HealthData> healthDatas) {
-        this.healthDatas = healthDatas;
+    public HealthDataTableModel(List<HealthData> healthData) {
+        this.healthDataList = healthData;
     }
 
     @Override
     public int getRowCount() {
-        return healthDatas.size();
+        return healthDataList.size();
     }
 
     @Override
@@ -33,24 +33,25 @@ public class HealthDataTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        HealthData healthData = healthDatas.get(rowIndex);
+        HealthData healthRecord  = healthDataList.get(rowIndex);
         return switch (columnIndex) {
-            case 0 -> healthData.HealthDataID;
-            case 1 -> healthData.UserID;
-            case 2 -> healthData.MeasurementDateTime;
-            case 3 -> healthData.Height;
-            case 4 -> healthData.Weight;
-            case 5 -> healthData.BodyFatPercentage;
-            case 6 -> healthData.BloodPressureSystolic;
-            case 7 -> healthData.BloodSugar;
-            case 8 -> healthData.HeartRate;
-            case 9 -> healthData.StressLevel;
+            case 0 -> healthRecord.HealthDataID;
+            case 1 -> healthRecord.UserID;
+            case 2 -> healthRecord.MeasurementDateTime;
+            case 3 -> healthRecord.Height;
+            case 4 -> healthRecord.Weight;
+            case 5 -> healthRecord.BodyFatPercentage;
+            case 6 -> healthRecord.BloodPressureSystolic;
+            case 7 -> healthRecord.BloodPressureDiastolic;
+            case 8 -> healthRecord.BloodSugar;
+            case 9 -> healthRecord.HeartRate;
+            case 10 -> healthRecord.StressLevel;
             default -> null;
         };
     }
 
-    public void setHealthDatas(List<HealthData> healthDatas) {
-        this.healthDatas = healthDatas;
+    public void setHealthData(List<HealthData> healthData) {
+        this.healthDataList = healthData;
         fireTableDataChanged();
     }
 }
