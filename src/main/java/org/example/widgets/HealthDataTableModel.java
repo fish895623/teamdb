@@ -1,7 +1,7 @@
 package org.example.widgets;
 
 import org.example.model.HealthData;
-import org.example.model.User;
+
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
