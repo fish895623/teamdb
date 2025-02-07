@@ -8,7 +8,7 @@ import java.util.List;
 public class UserTableModel extends AbstractTableModel {
   private List<User> users;
   private final String[] columnNames =
-      {"UserID", "Name", "BirthDate", "Gender", "ContactNumber", "Password"};
+      {"UserID", "Name", "BirthDate", "Gender", "ContactNumber"};
 
   public UserTableModel() {
   }
@@ -40,7 +40,6 @@ public class UserTableModel extends AbstractTableModel {
       case 2 -> user.birthDate;
       case 3 -> user.gender;
       case 4 -> user.contactNumber;
-      case 5 -> user.password;
       default -> null;
     };
   }
