@@ -8,15 +8,12 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.List;
 
 public class UserMain extends Frame {
   private static final Logger log = LoggerFactory.getLogger(UserMain.class);
-  private static UserMain instance;
   List<User> users;
   UserTableModel userTableModel;
   int hospitalID;
@@ -26,6 +23,12 @@ public class UserMain extends Frame {
   UserMain() throws SQLException {
     super("User Management");
     setSize(600, 400);
+
+    addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent windowEvent) {
+        dispose();
+      }
+    });
 
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
       Component focusedComponent =
@@ -41,6 +44,7 @@ public class UserMain extends Frame {
 
       return false;
     });
+
 
     add(button, BorderLayout.SOUTH);
     add(refreshButton, BorderLayout.NORTH);
@@ -66,11 +70,8 @@ public class UserMain extends Frame {
     setVisible(true);
   }
 
-  public static UserMain getInstance() throws SQLException {
-    if (instance == null) {
-      instance = new UserMain();
-    }
-    return instance;
+  public static UserMain getInstance() {
+    return LazyHolder.INSTANCE;
   }
 
   public void setHospitalID(int hospitalID) {
@@ -99,5 +100,17 @@ public class UserMain extends Frame {
     });
 
     return table;
+  }
+
+  private static class LazyHolder {
+    private static final UserMain INSTANCE;
+
+    static {
+      try {
+        INSTANCE = new UserMain();
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 }

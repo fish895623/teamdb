@@ -17,6 +17,6 @@ public class Main {
       return;
     }
 
-    new App();
+    App.getInstance();
   }
 }

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.sql.SQLException;
 
 /**
  * This class is responsible for appending a new hospital to the database.
@@ -71,11 +70,7 @@ public class AppendHospital extends Frame {
       log.error("Error inserting hospital", e);
     }
 
-    try {
-      App.getInstance().receiveEvent();
-    } catch (SQLException ex) {
-      throw new RuntimeException(ex);
-    }
+    App.getInstance().receiveEvent();
 
     dispose();
   }
