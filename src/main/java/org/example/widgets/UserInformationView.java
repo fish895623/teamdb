@@ -26,7 +26,7 @@ public class UserInformationView extends Frame {
   Button insertHealth;
   Button insertDiet;
   Button insertExercise;
-  Button viewHealth;
+  Button displayHeathData;
   Button displayDiet;
   Button displayExercise;
   Button medicalRecord;
@@ -54,7 +54,7 @@ public class UserInformationView extends Frame {
     insertHealth = new Button("Enter Health");
     insertDiet = new Button("Enter Diet");
     insertExercise = new Button("Enter Exercise");
-    viewHealth = new Button("Display Health");
+    displayHeathData = new Button("Display Health");
     displayDiet = new Button("Display Diet");
     displayExercise = new Button("Display Exercise");
     medicalRecord = new Button("Medical Record");
@@ -76,8 +76,11 @@ public class UserInformationView extends Frame {
     insertExercise.addActionListener(e -> {
       log.info("Insert Exercise button clicked");
     });
-    viewHealth.addActionListener(e -> {
+    displayHeathData.addActionListener(e -> {
       log.info("View Health button clicked");
+      healthDataMain = HealthDataMain.getInstance();
+      healthDataMain.setUserID(users.get(0).userID);
+      healthDataMain.setVisible(true);
     });
     displayDiet.addActionListener(e -> {
       log.info("Display Diet button clicked");
@@ -111,7 +114,7 @@ public class UserInformationView extends Frame {
     panel.add(insertHealth);
     panel.add(insertDiet);
     panel.add(insertExercise);
-    panel.add(viewHealth);
+    panel.add(displayHeathData);
     panel.add(displayDiet);
     panel.add(displayExercise);
 

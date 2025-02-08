@@ -71,19 +71,19 @@ public class HealthDataMain extends Frame {
 
   private void refreshData() throws SQLException {
     log.info("Refreshing data");
-    data = new HealthDataDB().getAll();
+    data = new HealthDataDB().findByUserID(userID);
     healthDataTableModel.setHealthData(data);
 
     repaint();
   }
 
-  private void setUserID(int userID) {
+  public void setUserID(int userID) {
     this.userID = userID;
   }
 
   public JTable createTable() {
     try {
-      data = new HealthDataDB().getAll();
+      data = new HealthDataDB().findByUserID(userID);
     } catch (Exception e) {
       log.error("Error getting HealthData", e);
     }
