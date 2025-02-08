@@ -1,12 +1,20 @@
 package org.example.widgets;
 
 import org.example.App;
+import org.example.filter.IntegerFilter;
 import org.example.model.Diet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,6 +48,9 @@ public class AppendDiet extends JFrame {
     Quantity = new JTextField(10);
     Calories = new JTextField(10);
     MealDateTime = new JTextField(10);
+
+    ((AbstractDocument) Quantity.getDocument()).setDocumentFilter(new IntegerFilter());
+    ((AbstractDocument) Calories.getDocument()).setDocumentFilter(new IntegerFilter());
 
     submitButton = new JButton("Submit");
     cancelButton = new JButton("Cancel");
@@ -110,11 +121,15 @@ public class AppendDiet extends JFrame {
 
     diet.UserID = userId;
 
-    try {
-      // TODO: Need flexible date format parser
-      diet.MealDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(MealDateTime.getText());
-    } catch (ParseException e) {
-      log.error(e.toString());
+    if (MealDateTime.getText().isEmpty()) {
+      diet.MealDateTime = new Date(System.currentTimeMillis());
+    } else {
+      try {
+        // TODO: Need flexible date format parser
+        diet.MealDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(MealDateTime.getText());
+      } catch (ParseException e) {
+        log.error(e.toString());
+      }
     }
 
     diet.FoodName = fName;

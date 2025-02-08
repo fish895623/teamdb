@@ -1,6 +1,8 @@
 package org.example.widgets;
 
 import org.example.database.HealthDataDB;
+import org.example.filter.FloatFilter;
+import org.example.filter.IntegerFilter;
 import org.example.model.HealthData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -56,6 +59,15 @@ public class AppendHealthData extends JFrame {
     measurementDateTimeTextField = new JTextField(10); // TODO: empty to today
     stressLevelTextField = new JTextField(10);
     weightTextField = new JTextField(10);
+
+    ((AbstractDocument) bloodPressureDiastolicTextField.getDocument()).setDocumentFilter(new IntegerFilter());
+    ((AbstractDocument) bloodPressureSystolicTextField.getDocument()).setDocumentFilter(new IntegerFilter());
+    ((AbstractDocument) bloodSugerTextField.getDocument()).setDocumentFilter(new IntegerFilter());
+    ((AbstractDocument) bodyFatPercentageTextField.getDocument()).setDocumentFilter(new IntegerFilter());
+    ((AbstractDocument) heartRateTextField.getDocument()).setDocumentFilter(new IntegerFilter());
+    ((AbstractDocument) heightTextField.getDocument()).setDocumentFilter(new FloatFilter());
+    ((AbstractDocument) stressLevelTextField.getDocument()).setDocumentFilter(new IntegerFilter());
+    ((AbstractDocument) weightTextField.getDocument()).setDocumentFilter(new FloatFilter());
 
     submitButton = new JButton("Submit");
     cancelButton = new JButton("Cancel");
