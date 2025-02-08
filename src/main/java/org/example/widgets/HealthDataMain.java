@@ -68,7 +68,8 @@ public class HealthDataMain extends Frame {
     } catch (Exception e) {
       log.error("Error getting HealthData", e);
     }
-    healthDataTableModel = new HealthDataTableModel(data);
+    healthDataTableModel = new HealthDataTableModel();
+    healthDataTableModel.setHealthData(data);
 
     return new JTable(healthDataTableModel);
   }
