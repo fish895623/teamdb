@@ -29,7 +29,7 @@ public class HealthDataMain extends Frame {
 
   public HealthDataMain() {
     super("Health Data");
-    setSize(300, 400);
+    setSize(900, 400);
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent event) {
