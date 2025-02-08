@@ -5,8 +5,12 @@ import org.example.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import java.awt.Button;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.Panel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -26,12 +30,17 @@ public class UserInformationView extends Frame {
   Button displayDiet;
   Button displayExercise;
   Button medicalRecord;
-  private List<User> users;
 
   AppendDiet appendDiet;
   AppendExercise appendExercise;
+  AppendMedicalRecord appendMedicalRecord;
+
   DietMain dietMain;
   ExerciseMain exerciseMain;
+  MedicalRecordMain medicalRecordMain;
+  HealthDataMain healthDataMain;
+
+  private List<User> users;
 
   private UserInformationView() {
     super("User Information");
