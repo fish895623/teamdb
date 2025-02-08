@@ -22,7 +22,7 @@ import java.util.List;
 public class HealthDataMain extends Frame {
   @SuppressWarnings("unused")
   private static final Logger log = LoggerFactory.getLogger(HealthDataMain.class);
-  Button button = new Button("Health Logs");
+  Button button = new Button("Add Health Data");
   Button refreshButton = new Button("Refresh");
   List<HealthData> data;
   HealthDataTableModel healthDataTableModel;
