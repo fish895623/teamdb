@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -71,5 +72,30 @@ public class HealthDataDB {
     }
 
     return data;
+  }
+
+  /**
+   * Insert data into the HealthData table
+   */
+  public void insert(HealthData data) throws SQLException {
+    log.info("Inserting HealthData: {}", data);
+    PreparedStatement pstmt = db.prepareStatement("""
+        INSERT INTO HealthData (
+            BloodPressureDiastolic, BodyFatPercentage, UserID,
+            HeartRate, BloodPressureSystolic, BloodSugar,
+            Height, Weight, MeasurementDateTime
+            )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """);
+    pstmt.setInt(1, data.BloodPressureDiastolic);
+    pstmt.setFloat(2, data.BodyFatPercentage);
+    pstmt.setInt(3, data.UserID);
+    pstmt.setInt(4, data.HeartRate);
+    pstmt.setInt(5, data.BloodPressureSystolic);
+    pstmt.setFloat(6, data.BloodSugar);
+    pstmt.setFloat(7, data.Height);
+    pstmt.setFloat(8, data.Weight);
+    pstmt.setDate(9, data.MeasurementDateTime);
+    pstmt.executeUpdate();
   }
 }
