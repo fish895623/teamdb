@@ -40,6 +40,11 @@ public class HealthDataMain extends Frame {
       @Override
       public void windowActivated(WindowEvent event) {
         log.info("Window activated");
+        try {
+          refreshData();
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
       }
     });
 
@@ -49,6 +54,11 @@ public class HealthDataMain extends Frame {
       log.info("Button clicked");
     });
     refreshButton.addActionListener(e -> {
+      try {
+        refreshData();
+      } catch (SQLException ex) {
+        throw new RuntimeException(ex);
+      }
     });
     JTable table = createTable();
     JScrollPane scrollPane = new JScrollPane(table);
