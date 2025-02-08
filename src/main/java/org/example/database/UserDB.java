@@ -57,17 +57,17 @@ public class UserDB {
 
   public List<User> findByHospitalID(int HospitalID) throws SQLException {
     List<User> users = new ArrayList<>();
-    Statement statement = db.createStatement();
-    ResultSet resultSet = statement.executeQuery("""
+    var statement = db.prepareStatement("""
         SELECT u.UserID,
                u.Name,
                u.BirthDate,
                u.Gender,
                u.ContactNumber
         FROM User u
-                 JOIN MedicalRecord m ON u.UserID = m.UserID
-        WHERE m.HospitalID =
-        """ + HospitalID + ";");
+        WHERE u.HospitalID = ?
+        """);
+    statement.setInt(1, HospitalID);
+    var resultSet = statement.executeQuery();
 
     return getUsers(users, resultSet);
   }
