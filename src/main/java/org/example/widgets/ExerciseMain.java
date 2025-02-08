@@ -1,5 +1,6 @@
 package org.example.widgets;
 
+import org.example.database.ExerciseDB;
 import org.example.model.Exercise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class ExerciseMain extends Frame {
   Long hospitalID;
   Button button = new Button("New Exercise");
   Button refreshButton = new Button("Refresh");
+  int userID;
 
   ExerciseMain() throws SQLException {
     super("Exercise Management");
@@ -31,6 +33,24 @@ public class ExerciseMain extends Frame {
       @Override
       public void windowClosing(WindowEvent windowEvent) {
         dispose();
+      }
+
+      @Override
+      public void windowActivated(WindowEvent e) {
+        log.info("Window activated");
+
+        try {
+          this.refreshData();
+        } catch (SQLException e1) {
+          e1.printStackTrace();
+        }
+      }
+
+      private void refreshData() throws SQLException {
+        log.info("Refreshing data");
+        exercises = new ExerciseDB().findByUserID(userID);
+
+        repaint();
       }
     });
 
@@ -52,19 +72,14 @@ public class ExerciseMain extends Frame {
     add(refreshButton, BorderLayout.NORTH);
     button.addActionListener(e -> {
       log.info("Button clicked");
-      // TODO
-      // AppendExercise appendExercise = new AppendExercise();
-      // appendExercise.setVisible(true);
-
     });
     refreshButton.addActionListener(e -> {
 
     });
-    JTable table = createTable();
+    exercises = new ExerciseDB().findByUserID(1);
+    JTable table = createTable(exercises);
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
-
-    setVisible(true);
   }
 
   public static ExerciseMain getInstance() {
@@ -79,24 +94,15 @@ public class ExerciseMain extends Frame {
     log.info("Event received");
   }
 
-  private JTable createTable() throws SQLException {
-    JTable table = new JTable(exerciseTableModel);
-    table.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 1) {
-          JTable target = (JTable) e.getSource();
-          int row = target.getSelectedRow();
-          int column = target.getSelectedColumn();
-          log.info("Selected row: " + row + " column: " + column);
-          // Get Exercise Specific info alongside
-        }
-      }
-    });
-
-    return table;
+  private JTable createTable(List<Exercise> exercises) throws SQLException {
+    exerciseTableModel = new ExerciseTableModel();
+    exerciseTableModel.setExercise(exercises);
+    return new JTable(exerciseTableModel);
   }
 
+  public void setUserID(int userID) {
+    this.userID = userID;
+  }
 
   private static class LazyHolder {
     private static final ExerciseMain INSTANCE;
