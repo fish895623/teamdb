@@ -5,12 +5,15 @@ import org.example.model.Exercise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -76,7 +79,7 @@ public class ExerciseMain extends Frame {
     refreshButton.addActionListener(e -> {
 
     });
-    exercises = new ExerciseDB().findByUserID(1);
+    exercises = new ExerciseDB().findByUserID(userID);
     JTable table = createTable(exercises);
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);

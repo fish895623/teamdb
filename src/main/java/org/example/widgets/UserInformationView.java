@@ -5,8 +5,12 @@ import org.example.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import java.awt.Button;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.Panel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -22,16 +26,21 @@ public class UserInformationView extends Frame {
   Button insertHealth;
   Button insertDiet;
   Button insertExercise;
-  Button viewHealth;
+  Button displayHeathData;
   Button displayDiet;
   Button displayExercise;
   Button medicalRecord;
-  private List<User> users;
 
   AppendDiet appendDiet;
   AppendExercise appendExercise;
+  AppendMedicalRecord appendMedicalRecord;
+
   DietMain dietMain;
   ExerciseMain exerciseMain;
+  MedicalRecordMain medicalRecordMain;
+  HealthDataMain healthDataMain;
+
+  private List<User> users;
 
   private UserInformationView() {
     super("User Information");
@@ -45,7 +54,7 @@ public class UserInformationView extends Frame {
     insertHealth = new Button("Enter Health");
     insertDiet = new Button("Enter Diet");
     insertExercise = new Button("Enter Exercise");
-    viewHealth = new Button("Display Health");
+    displayHeathData = new Button("Display Health");
     displayDiet = new Button("Display Diet");
     displayExercise = new Button("Display Exercise");
     medicalRecord = new Button("Medical Record");
@@ -67,14 +76,16 @@ public class UserInformationView extends Frame {
     insertExercise.addActionListener(e -> {
       log.info("Insert Exercise button clicked");
     });
-    viewHealth.addActionListener(e -> {
+    displayHeathData.addActionListener(e -> {
       log.info("View Health button clicked");
+      healthDataMain = HealthDataMain.getInstance();
+      healthDataMain.setUserID(users.get(0).userID);
+      healthDataMain.setVisible(true);
     });
     displayDiet.addActionListener(e -> {
       log.info("Display Diet button clicked");
       dietMain = DietMain.getInstance();
       dietMain.setUserID(users.get(0).userID);
-      log.info("User ID: {}", users.get(0).userID);
       dietMain.setVisible(true);
     });
     displayExercise.addActionListener(e -> {
@@ -102,7 +113,7 @@ public class UserInformationView extends Frame {
     panel.add(insertHealth);
     panel.add(insertDiet);
     panel.add(insertExercise);
-    panel.add(viewHealth);
+    panel.add(displayHeathData);
     panel.add(displayDiet);
     panel.add(displayExercise);
 

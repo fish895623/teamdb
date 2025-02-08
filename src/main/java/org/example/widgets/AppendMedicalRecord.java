@@ -5,7 +5,11 @@ import org.example.model.MedicalRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
+import java.awt.Button;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.TextField;
 import java.time.LocalDateTime;
 
 /**
@@ -19,8 +23,6 @@ public class AppendMedicalRecord extends Frame {
   private final TextField userID;
   private final Button submitButton;
   private final Button cancelButton;
-
-
 
   public AppendMedicalRecord() {
     super("Append Medical");
