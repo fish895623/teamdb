@@ -78,8 +78,6 @@ public class AppendMedicalRecord extends Frame {
     medical.Now = LocalDateTime.now();
     //medical.MedicalRecordID = medicalRecordID;
 
-
-
     try {
       new org.example.database.MedicalRecordDB().insert(medical);
     } catch (Exception e) {
