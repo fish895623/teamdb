@@ -1,6 +1,5 @@
 package org.example.widgets;
 
-import org.example.database.ExerciseDB;
 import org.example.database.HealthDataDB;
 import org.example.model.HealthData;
 import org.slf4j.Logger;
@@ -8,13 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.text.JTextComponent;
 import java.awt.BorderLayout;
 import java.awt.Button;
-import java.awt.Component;
 import java.awt.Frame;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -27,6 +22,7 @@ public class HealthDataMain extends Frame {
   Button refreshButton = new Button("Refresh");
   List<HealthData> data;
   HealthDataTableModel healthDataTableModel;
+  private int userID = 0;
 
   public HealthDataMain() {
     super("Health Data");
@@ -80,6 +76,11 @@ public class HealthDataMain extends Frame {
 
     repaint();
   }
+
+  private void setUserID(int userID) {
+    this.userID = userID;
+  }
+
   public JTable createTable() {
     try {
       data = new HealthDataDB().getAll();

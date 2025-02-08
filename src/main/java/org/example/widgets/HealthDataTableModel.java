@@ -2,7 +2,6 @@ package org.example.widgets;
 
 import org.example.model.HealthData;
 
-
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
