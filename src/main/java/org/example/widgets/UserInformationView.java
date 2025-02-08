@@ -34,6 +34,7 @@ public class UserInformationView extends Frame {
   AppendDiet appendDiet;
   AppendExercise appendExercise;
   AppendMedicalRecord appendMedicalRecord;
+  AppendHealthData appendHealthData;
 
   DietMain dietMain;
   ExerciseMain exerciseMain;
@@ -66,6 +67,9 @@ public class UserInformationView extends Frame {
 
     insertHealth.addActionListener(e -> {
       log.info("Insert Health button clicked");
+      appendHealthData = AppendHealthData.getInstance();
+      appendHealthData.setUserID(users.get(0).userID);
+      appendHealthData.setVisible(true);
     });
     insertDiet.addActionListener(e -> {
       log.info("Insert Diet button clicked");
@@ -75,6 +79,9 @@ public class UserInformationView extends Frame {
     });
     insertExercise.addActionListener(e -> {
       log.info("Insert Exercise button clicked");
+      appendExercise = AppendExercise.getInstance();
+      appendExercise.setUserID(users.get(0).userID);
+      appendExercise.setVisible(true);
     });
     displayHeathData.addActionListener(e -> {
       log.info("View Health button clicked");
