@@ -23,6 +23,7 @@ public class ExerciseMain extends Frame {
   Long hospitalID;
   Button button = new Button("New Exercise");
   Button refreshButton = new Button("Refresh");
+  int userID;
 
   ExerciseMain() throws SQLException {
     super("Exercise Management");
@@ -35,8 +36,21 @@ public class ExerciseMain extends Frame {
       }
 
       @Override
-      public void windowActivated(WindowEvent windowEvent) {
-        refreshTableData();
+      public void windowActivated(WindowEvent e) {
+        log.info("Window activated");
+
+        try {
+          this.refreshData();
+        } catch (SQLException e1) {
+          e1.printStackTrace();
+        }
+      }
+
+      private void refreshData() throws SQLException {
+        log.info("Refreshing data");
+        exercises = new ExerciseDB().findByUserID(userID);
+
+        repaint();
       }
     });
 
@@ -62,20 +76,10 @@ public class ExerciseMain extends Frame {
     refreshButton.addActionListener(e -> {
 
     });
-    JTable table = createTable();
+    exercises = new ExerciseDB().findByUserID(1);
+    JTable table = createTable(exercises);
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
-  }
-
-  public void refreshTableData() {
-    try {
-      exercises = new ExerciseDB().getAll();
-      exerciseTableModel.setExercise(exercises);
-    } catch (SQLException ex) {
-      log.error("Failed to refresh user data", ex);
-    }
-
-    repaint();
   }
 
   public static ExerciseMain getInstance() {
@@ -90,9 +94,14 @@ public class ExerciseMain extends Frame {
     log.info("Event received");
   }
 
-  private JTable createTable() throws SQLException {
+  private JTable createTable(List<Exercise> exercises) throws SQLException {
     exerciseTableModel = new ExerciseTableModel();
+    exerciseTableModel.setExercise(exercises);
     return new JTable(exerciseTableModel);
+  }
+
+  public void setUserID(int userID) {
+    this.userID = userID;
   }
 
   private static class LazyHolder {
@@ -105,11 +114,5 @@ public class ExerciseMain extends Frame {
         throw new RuntimeException(e);
       }
     }
-  }
-
-  private int userID;
-
-  public void setUserID(int userID) {
-    this.userID = userID;
   }
 }
