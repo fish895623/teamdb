@@ -17,6 +17,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.List;
 
 public class HealthDataMain extends Frame {
@@ -62,6 +63,13 @@ public class HealthDataMain extends Frame {
     return LazyHolder.INSTANCE;
   }
 
+  private void refreshData() throws SQLException {
+    log.info("Refreshing data");
+    data = new HealthDataDB().getAll();
+    healthDataTableModel.setHealthData(data);
+
+    repaint();
+  }
   public JTable createTable() {
     try {
       data = new HealthDataDB().getAll();
