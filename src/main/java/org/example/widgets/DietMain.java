@@ -78,7 +78,7 @@ public class DietMain extends Frame {
     });
     refreshButton.addActionListener(e -> {
     });
-    diets = new DietDB().findByUserID(1);
+    diets = new DietDB().findByUserID(userID);
     JTable table = createTable(diets);
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);

@@ -86,7 +86,6 @@ public class UserInformationView extends Frame {
       log.info("Display Diet button clicked");
       dietMain = DietMain.getInstance();
       dietMain.setUserID(users.get(0).userID);
-      log.info("User ID: {}", users.get(0).userID);
       dietMain.setVisible(true);
     });
     displayExercise.addActionListener(e -> {

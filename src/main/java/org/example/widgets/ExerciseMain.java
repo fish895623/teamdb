@@ -79,7 +79,7 @@ public class ExerciseMain extends Frame {
     refreshButton.addActionListener(e -> {
 
     });
-    exercises = new ExerciseDB().findByUserID(1);
+    exercises = new ExerciseDB().findByUserID(userID);
     JTable table = createTable(exercises);
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);

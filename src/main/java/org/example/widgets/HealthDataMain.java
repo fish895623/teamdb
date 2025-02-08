@@ -15,6 +15,8 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class HealthDataMain extends Frame {
   @SuppressWarnings("unused")
   private static final Logger log = LoggerFactory.getLogger(HealthDataMain.class);
@@ -61,8 +63,11 @@ public class HealthDataMain extends Frame {
     add(scrollPane, BorderLayout.CENTER);
   }
 
-  public static void main(String[] args) {
-    HealthDataMain.getInstance().setVisible(true);
+  public static void main(String[] args) throws InterruptedException {
+    var a = HealthDataMain.getInstance();
+    a.setUserID(2);
+    sleep(1000);
+    a.setVisible(true);
   }
 
   public static HealthDataMain getInstance() {
