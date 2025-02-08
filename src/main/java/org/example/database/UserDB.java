@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,4 +72,19 @@ public class UserDB {
     return getUsers(users, resultSet);
   }
 
+  public void insert(User user) throws SQLException {
+    var statement = db.prepareStatement("""
+        INSERT INTO User (Name, BirthDate, Gender, ContactNumber, Password)
+        VALUES (?, ?, ?, ?, ?);
+        """);
+    statement.setString(1, user.name);
+    statement.setString(2, new SimpleDateFormat("yyyy-MM-dd").format(user.birthDate));
+    statement.setString(3, user.gender);
+    statement.setString(4, user.contactNumber);
+    if (user.password == null) {
+      user.password = "";
+    }
+    statement.setString(5, user.password);
+    statement.executeUpdate();
+  }
 }

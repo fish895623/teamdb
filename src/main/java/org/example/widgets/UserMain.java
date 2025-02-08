@@ -5,10 +5,19 @@ import org.example.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -25,6 +34,8 @@ public class UserMain extends JFrame {
   Button button = new Button("New User");
   Button refreshButton = new Button("Refresh");
   private UserInformationView userInformationView;
+
+  AppendUser appendUser;
 
   private UserMain() throws SQLException {
     super("User Management");
@@ -43,8 +54,7 @@ public class UserMain extends JFrame {
     });
 
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-      Component focusedComponent =
-          KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+      Component focusedComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
       if (!(focusedComponent instanceof JTextComponent)) {
         if (e.getID() == KeyEvent.KEY_PRESSED) {
@@ -61,9 +71,9 @@ public class UserMain extends JFrame {
     add(refreshButton, BorderLayout.NORTH);
     button.addActionListener(e -> {
       log.info("Button clicked");
-      // TODO
-      // AppendUser appendUser = new AppendUser();
-      // appendUser.setVisible(true);
+      appendUser = AppendUser.getInstance();
+      appendUser.setHospitalID(hospitalID);
+      appendUser.setVisible(true);
     });
     refreshButton.addActionListener(e -> {
       log.info("Refresh button clicked");
