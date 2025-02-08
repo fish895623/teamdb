@@ -100,7 +100,7 @@ public class AppendHealthData extends JFrame {
   }
 
   public void setUserID(int userID) {
-    userId = userID;
+    this.userId = userID;
   }
 
   private void addLabelAndComponent(String label, JComponent component, GridBagConstraints gbc, int row) {
