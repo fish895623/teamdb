@@ -20,7 +20,6 @@ import static java.lang.Thread.sleep;
 public class HealthDataMain extends Frame {
   @SuppressWarnings("unused")
   private static final Logger log = LoggerFactory.getLogger(HealthDataMain.class);
-  Button button = new Button("Add Health Data");
   Button refreshButton = new Button("Refresh");
   List<HealthData> data;
   HealthDataTableModel healthDataTableModel;
@@ -46,11 +45,7 @@ public class HealthDataMain extends Frame {
       }
     });
 
-    add(button, BorderLayout.SOUTH);
     add(refreshButton, BorderLayout.NORTH);
-    button.addActionListener(e -> {
-      log.info("Button clicked");
-    });
     refreshButton.addActionListener(e -> {
       try {
         refreshData();

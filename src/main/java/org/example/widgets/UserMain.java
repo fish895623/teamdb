@@ -93,10 +93,6 @@ public class UserMain extends JFrame {
     this.hospitalID = hospitalID;
   }
 
-  public void receiveEvent() {
-    log.info("Event received");
-  }
-
   private JTable getJTable(List<User> users) {
     userTableModel = new UserTableModel();
     userTableModel.setUsers(users);
