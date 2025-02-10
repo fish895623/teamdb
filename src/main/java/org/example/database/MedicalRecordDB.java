@@ -6,9 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +41,17 @@ public class MedicalRecordDB {
     return data;
   }
   public void insert(MedicalRecord medicalRecord) throws SQLException {
-	    Statement statement = db.createStatement();
-	    statement.executeUpdate("INSERT INTO MedicalRecord (HospitalID,UserID,VisitDateTime, Diagnosis, Prescription) VALUES ('" + medicalRecord.HospitalID + "', '"+ medicalRecord.UserID+"', '"+ medicalRecord.Now+ "', '"  + medicalRecord.Diagnosis + "', '" + medicalRecord.Prescription + "')");
+	    PreparedStatement statement = db.prepareStatement("""
+            INSERT INTO MedicalRecord (HospitalID, UserID, VisitDateTime, Diagnosis, Prescription)
+            VALUES (?, ?, ?, ?, ?)
+            """);
+        statement.setInt(1, medicalRecord.HospitalID);
+        statement.setInt(2, medicalRecord.UserID);
+        statement.setString(3, new SimpleDateFormat("yyyy-MM-dd").format(medicalRecord.VisitDateTime));
+        statement.setString(4, medicalRecord.Diagnosis);
+        statement.setString(5, medicalRecord.Prescription);
+
+        statement.executeUpdate();
 	  }
  
 }

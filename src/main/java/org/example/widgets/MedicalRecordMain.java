@@ -11,66 +11,38 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 public class MedicalRecordMain extends Frame {
   private static final Logger log = LoggerFactory.getLogger(MedicalRecordMain.class);
-  private static MedicalRecordMain instance;
   List<MedicalRecord> users;
   MedicalRecordTableModel medicalRecordTableModel;
   Long hospitalID;
-  Button button = new Button("new MedicalRecord");
   Button refreshButton = new Button("Refresh");
+  private int userID;
 
   MedicalRecordMain() throws SQLException {
-    super("User Management");
+    super("Medical Record");
     setSize(600, 400);
-
-    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-      Component focusedComponent =
-          KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-      if (!(focusedComponent instanceof JTextComponent)) {
-        if (e.getID() == KeyEvent.KEY_PRESSED) {
-          if (e.getKeyCode() == KeyEvent.VK_Q) {
-            System.exit(0);
-          }
-        }
+    addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent windowEvent) {
+        dispose();
       }
-
-      return false;
     });
 
-   
     add(refreshButton, BorderLayout.NORTH);
-    add(button, BorderLayout.SOUTH);
-   
+
     JTable table = createTable();
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
-
-    setVisible(true);
-  }
-
-  public static MedicalRecordMain getInstance() throws SQLException {
-    if (instance == null) {
-      instance = new MedicalRecordMain();
-    }
-    return instance;
-  }
-
-  public static void main(String[] args) throws SQLException {
-    var A = new MedicalRecordMain();
   }
 
   public void setHospitalID(int hospitalID) {
     this.hospitalID = 1L;
-  }
-
-  public void receiveEvent() {
-    log.info("Event received");
   }
 
   private JTable createTable() throws SQLException {
@@ -91,5 +63,25 @@ public class MedicalRecordMain extends Frame {
     });
 
     return table;
+  }
+
+  public void setUserID(int userID) {
+    this.userID =  userID;
+  }
+
+  private static class LazyHolder {
+      private static final MedicalRecordMain INSTANCE;
+
+    static {
+      try {
+        INSTANCE = new MedicalRecordMain();
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
+  public static MedicalRecordMain getInstance() {
+      return LazyHolder.INSTANCE;
   }
 }

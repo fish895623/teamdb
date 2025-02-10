@@ -26,10 +26,12 @@ public class UserInformationView extends Frame {
   Button insertHealth;
   Button insertDiet;
   Button insertExercise;
+  Button insertMediaRecord;
+
   Button displayHeathData;
   Button displayDiet;
   Button displayExercise;
-  Button medicalRecord;
+  Button displayMediaRecord;
 
   AppendDiet appendDiet;
   AppendExercise appendExercise;
@@ -55,10 +57,11 @@ public class UserInformationView extends Frame {
     insertHealth = new Button("Enter Health");
     insertDiet = new Button("Enter Diet");
     insertExercise = new Button("Enter Exercise");
+    insertMediaRecord = new Button("Enter Media Record");
     displayHeathData = new Button("Display Health");
     displayDiet = new Button("Display Diet");
     displayExercise = new Button("Display Exercise");
-    medicalRecord = new Button("Medical Record");
+    displayMediaRecord = new Button("Display Medical Record");
     users = List.of(new User());
     nameLabel = new JLabel();
     birthDateLabel = new JLabel();
@@ -83,6 +86,13 @@ public class UserInformationView extends Frame {
       appendExercise.setUserID(users.get(0).userID);
       appendExercise.setVisible(true);
     });
+    insertMediaRecord.addActionListener(e -> {
+      log.info("Insert Medical Record button clicked");
+      appendMedicalRecord = AppendMedicalRecord.getInstance();
+      appendMedicalRecord.setUserID(users.get(0).userID);
+      appendMedicalRecord.setHospitalID(users.get(0).hospitalID);
+      appendMedicalRecord.setVisible(true);
+    });
     displayHeathData.addActionListener(e -> {
       log.info("View Health button clicked");
       healthDataMain = HealthDataMain.getInstance();
@@ -101,8 +111,12 @@ public class UserInformationView extends Frame {
       exerciseMain.setUserID(users.get(0).userID);
       exerciseMain.setVisible(true);
     });
-    medicalRecord.addActionListener(e -> {
-      log.info("Medical Record button clicked");
+    displayMediaRecord.addActionListener(e -> {
+      log.info("Display Medical Record button clicked");
+      medicalRecordMain = MedicalRecordMain.getInstance();
+      medicalRecordMain.setUserID(users.get(0).userID);
+      medicalRecordMain.setHospitalID(users.get(0).hospitalID);
+      medicalRecordMain.setVisible(true);
     });
 
     GridLayout gridLayout = new GridLayout(0, 1);
@@ -120,9 +134,11 @@ public class UserInformationView extends Frame {
     panel.add(insertHealth);
     panel.add(insertDiet);
     panel.add(insertExercise);
+    panel.add(insertMediaRecord);
     panel.add(displayHeathData);
     panel.add(displayDiet);
     panel.add(displayExercise);
+    panel.add(displayMediaRecord);
 
     add(panel);
   }

@@ -24,7 +24,6 @@ public class DietMain extends Frame {
   List<Diet> diets;
   DietTableModel dietTableModel;
   Long hospitalID;
-  Button button = new Button("New Diet");
   Button refreshButton = new Button("Refresh");
   int userID = 0;
 
@@ -71,11 +70,7 @@ public class DietMain extends Frame {
       return false;
     });
 
-    add(button, BorderLayout.SOUTH);
     add(refreshButton, BorderLayout.NORTH);
-    button.addActionListener(e -> {
-      log.info("Button clicked");
-    });
     refreshButton.addActionListener(e -> {
     });
     diets = new DietDB().findByUserID(userID);

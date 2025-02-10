@@ -24,7 +24,6 @@ public class ExerciseMain extends Frame {
   List<Exercise> exercises;
   ExerciseTableModel exerciseTableModel;
   Long hospitalID;
-  Button button = new Button("New Exercise");
   Button refreshButton = new Button("Refresh");
   int userID;
 
@@ -71,11 +70,7 @@ public class ExerciseMain extends Frame {
       return false;
     });
 
-    add(button, BorderLayout.SOUTH);
     add(refreshButton, BorderLayout.NORTH);
-    button.addActionListener(e -> {
-      log.info("Button clicked");
-    });
     refreshButton.addActionListener(e -> {
 
     });
@@ -89,15 +84,7 @@ public class ExerciseMain extends Frame {
     return LazyHolder.INSTANCE;
   }
 
-  public void setHospitalID(int hospitalID) {
-    this.hospitalID = 1L;
-  }
-
-  public void receiveEvent() {
-    log.info("Event received");
-  }
-
-  private JTable createTable(List<Exercise> exercises) throws SQLException {
+  private JTable createTable(List<Exercise> exercises) {
     exerciseTableModel = new ExerciseTableModel();
     exerciseTableModel.setExercise(exercises);
     return new JTable(exerciseTableModel);

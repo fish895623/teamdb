@@ -1,7 +1,6 @@
 package org.example.model;
 
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class MedicalRecord {
@@ -11,5 +10,4 @@ public class MedicalRecord {
   public Date VisitDateTime;
   public String Diagnosis;
   public String Prescription;
-  public LocalDateTime Now;
 }
