@@ -137,14 +137,16 @@ public class HealthDataDB {
 
     ResultSet resultSet = preparedStatement.executeQuery();
 
-    data.Height = resultSet.getFloat("Height");
-    data.Weight = resultSet.getFloat("Weight");
-    data.BodyFatPercentage = resultSet.getFloat("BodyFatPercentage");
-    data.BloodPressureSystolic = resultSet.getInt("BloodPressureSystolic");
-    data.BloodPressureDiastolic = resultSet.getInt("BloodPressureDiastolic");
-    data.BloodPressureSystolicAverage = resultSet.getFloat("BloodPressureSystolicAverage");
-    data.BloodPressureDiastolicAverage = resultSet.getFloat("BloodPressureDiastolicAverage");
+    if (resultSet.next()) {
+      data.Height = resultSet.getInt("Height");
+      data.Weight = resultSet.getInt("Weight");
+      data.BodyFatPercentage = resultSet.getFloat("BodyFatPercentage");
+      data.BloodPressureSystolic = resultSet.getInt("BloodPressureSystolic");
+      data.BloodPressureDiastolic = resultSet.getInt("BloodPressureDiastolic");
+      data.BloodPressureSystolicAverage = resultSet.getFloat("BloodPressureSystolicAverage");
+      data.BloodPressureDiastolicAverage = resultSet.getFloat("BloodPressureDiastolicAverage");
 
+    }
     return data;
   }
 }
