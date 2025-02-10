@@ -6,13 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class DietDB {
@@ -76,10 +76,16 @@ public class DietDB {
   }
 
   public void insert(Diet diet) throws SQLException {
-    Statement statement = db.createStatement();
-    statement.executeUpdate(
-        "INSERT INTO Diet (UserID,MealDateTime, FoodName, Quantity,Calories) VALUES ('" + diet.UserID + "', '"
-            + diet.MealDateTime + "', '" + diet.FoodName + "', '" + diet.Quantity + "', '" + diet.Calories + "')");
+    PreparedStatement statement = db.prepareStatement("""
+                INSERT INTO Diet (UserID, MealDateTime, FoodName, Quantity,Calories)
+                VALUES (?, ?, ?, ?, ?)
+        """);
+    statement.setInt(1, diet.UserID);
+    statement.setString(2, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(diet.MealDateTime));
+    statement.setString(3, diet.FoodName);
+    statement.setFloat(4, diet.Quantity);
+    statement.setInt(5, diet.Calories);
+    statement.executeUpdate();
   }
 
 }
