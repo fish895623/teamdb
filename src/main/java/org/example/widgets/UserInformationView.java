@@ -47,7 +47,7 @@ public class UserInformationView extends Frame {
 
   private UserInformationView() {
     super("User Information");
-    setSize(300, 400);
+    setSize(300, 600);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent windowEvent) {
         dispose();
@@ -139,6 +139,31 @@ public class UserInformationView extends Frame {
     panel.add(displayDiet);
     panel.add(displayExercise);
     panel.add(displayMediaRecord);
+
+    Panel userMedicalInformation = new Panel(new GridLayout(0, 2));
+    Panel panel1 = new Panel(new GridLayout(0, 1));
+    var health_data = new Label("Health Data");
+    health_data.setAlignment(Label.CENTER);
+    panel1.add(health_data);
+
+    userMedicalInformation.add(new Label("Height")); // latest height
+    userMedicalInformation.add(new Label("Height"));
+    userMedicalInformation.add(new Label("Weight")); // latest weight
+    userMedicalInformation.add(new Label("Weight"));
+    userMedicalInformation.add(new Label("BodyFatPercentage")); // latest body fat percentage
+    userMedicalInformation.add(new Label("BodyFatPercentage"));
+    userMedicalInformation.add(new Label("BloodPressureSystolic")); // latest blood pressure systolic
+    userMedicalInformation.add(new Label("BloodPressureSystolic"));
+    userMedicalInformation.add(new Label("BloodPressureSystolic")); // average blood pressure systolic 3years
+    userMedicalInformation.add(new Label("BloodPressureSystolic"));
+    userMedicalInformation.add(new Label("BloodPressureDiastolic")); // latest blood pressure diastolic
+    userMedicalInformation.add(new Label("BloodPressureDiastolic"));
+    userMedicalInformation.add(new Label("BloodPressureDiastolic")); // average blood pressure diastolic 3years
+    userMedicalInformation.add(new Label("BloodPressureDiastolic"));
+
+    panel1.add(userMedicalInformation);
+
+    panel.add(panel1);
 
     add(panel);
   }
