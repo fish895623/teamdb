@@ -153,6 +153,8 @@ public class AppendHealthData extends JFrame {
       log.error("Error inserting diet", e);
     }
 
+    UserInformationView.getInstance().refresh();
+
     dispose();
   }
 

@@ -58,6 +58,7 @@ public class UserInformationView extends Frame {
   HealthDataMain healthDataMain;
   UserInformation userInformation;
   private List<User> users;
+  private int userID;
 
   private UserInformationView() {
     super("User Information");
@@ -189,16 +190,16 @@ public class UserInformationView extends Frame {
     userMedicalInformation.add(new Label("BodyFatPercentage")); // latest body fat percentage
     userMedicalInformation.add(bodyFatLabel); // latest body fat percentage
     userMedicalInformation.add(new Label());
-    userMedicalInformation.add(new Label("BloodPressureSystolic")); // latest blood pressure systolic
+    userMedicalInformation.add(new Label("Systolic BP")); // latest blood pressure systolic
     userMedicalInformation.add(bloodPressureSystolicLabel); // latest blood pressure systolic
     userMedicalInformation.add(bloodPressureSystolicWarningLabel); // latest blood pressure systolic
-    userMedicalInformation.add(new Label("BloodPressureSystolic")); // average blood pressure systolic 3years
-    userMedicalInformation.add(bloodPressureSystolicAverageLabel); // average blood pressure systolic 3years
-    userMedicalInformation.add(new Label());
     userMedicalInformation.add(new Label("BloodPressureDiastolic")); // latest blood pressure diastolic
     userMedicalInformation.add(bloodPressureDiastolicLabel); // latest blood pressure diastolic
     userMedicalInformation.add(bloodPressureDiastolicWarningLabel);
-    userMedicalInformation.add(new Label("BloodPressureDiastolic")); // average blood pressure diastolic 3years
+    userMedicalInformation.add(new Label("Systolic BP Average")); // average blood pressure systolic 3years
+    userMedicalInformation.add(bloodPressureSystolicAverageLabel); // average blood pressure systolic 3years
+    userMedicalInformation.add(new Label());
+    userMedicalInformation.add(new Label("Diastolic BP Average")); // average blood pressure diastolic 3years
     userMedicalInformation.add(bloodPressureDiastolicAverageLabel); // average blood pressure diastolic 3years
     userMedicalInformation.add(new Label());
 
@@ -215,6 +216,7 @@ public class UserInformationView extends Frame {
   }
 
   public void setUserID(int userID) throws SQLException {
+    this.userID = userID;
     log.info("User ID: {}", userID);
     // Get user information from database
     users = new UserDB().findByUserID(userID);
@@ -224,14 +226,19 @@ public class UserInformationView extends Frame {
     genderLabel.setText("Gender: " + users.get(0).gender);
     contactLabel.setText("Contact: " + users.get(0).contactNumber);
 
-    userInformation = new HealthDataDB().getUserHealthData(userID);
 
     setUserInformationLabel();
 
     repaint();
   }
 
+
   public void setUserInformationLabel() {
+    try {
+      userInformation = new HealthDataDB().getUserHealthData(this.userID);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
     heightLabel.setText(String.format("%.2fcm", userInformation.Height));
     weightLabel.setText(String.format("%.2fkg", userInformation.Weight));
     bodyFatLabel.setText(String.format("%.2f%%", userInformation.BodyFatPercentage));
@@ -280,7 +287,10 @@ public class UserInformationView extends Frame {
       bloodPressureDiastolicWarningLabel.setText("Low");
       bloodPressureDiastolicWarningLabel.setBackground(new Color(0, 0, 255)); // BLUE
     }
+  }
 
+  public void refresh() {
+    setUserInformationLabel();
   }
 
   private static class LazyHolder {
