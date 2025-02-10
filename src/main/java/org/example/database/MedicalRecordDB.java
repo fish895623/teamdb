@@ -40,18 +40,44 @@ public class MedicalRecordDB {
 
     return data;
   }
-  public void insert(MedicalRecord medicalRecord) throws SQLException {
-	    PreparedStatement statement = db.prepareStatement("""
-            INSERT INTO MedicalRecord (HospitalID, UserID, VisitDateTime, Diagnosis, Prescription)
-            VALUES (?, ?, ?, ?, ?)
-            """);
-        statement.setInt(1, medicalRecord.HospitalID);
-        statement.setInt(2, medicalRecord.UserID);
-        statement.setString(3, new SimpleDateFormat("yyyy-MM-dd").format(medicalRecord.VisitDateTime));
-        statement.setString(4, medicalRecord.Diagnosis);
-        statement.setString(5, medicalRecord.Prescription);
 
-        statement.executeUpdate();
-	  }
- 
+  public List<MedicalRecord> findByUserIDAndHospital(int userID, int hospitalID) throws SQLException {
+    log.info("Finding medical records for user ID: {} {}", userID, hospitalID);
+    List<MedicalRecord> data = new ArrayList<>();
+    PreparedStatement statement = db.prepareStatement("""
+        SELECT * FROM MedicalRecord
+        WHERE UserID = ? AND HospitalID = ?
+        """);
+    statement.setInt(1, userID);
+    statement.setInt(2, hospitalID);
+    ResultSet resultSet = statement.executeQuery();
+
+    while (resultSet.next()) {
+      MedicalRecord d = new MedicalRecord();
+      d.MedicalRecordID = resultSet.getInt("MedicalRecordID");
+      d.UserID = resultSet.getInt("UserID");
+      d.HospitalID = resultSet.getInt("HospitalID");
+      d.VisitDateTime = resultSet.getDate("VisitDateTime");
+      d.Diagnosis = resultSet.getString("Diagnosis");
+      d.Prescription = resultSet.getString("Prescription");
+
+      data.add(d);
+    }
+
+    return data;
+  }
+
+  public void insert(MedicalRecord medicalRecord) throws SQLException {
+    PreparedStatement statement = db.prepareStatement("""
+        INSERT INTO MedicalRecord (HospitalID, UserID, VisitDateTime, Diagnosis, Prescription)
+        VALUES (?, ?, ?, ?, ?)
+        """);
+    statement.setInt(1, medicalRecord.HospitalID);
+    statement.setInt(2, medicalRecord.UserID);
+    statement.setString(3, new SimpleDateFormat("yyyy-MM-dd").format(medicalRecord.VisitDateTime));
+    statement.setString(4, medicalRecord.Diagnosis);
+    statement.setString(5, medicalRecord.Prescription);
+
+    statement.executeUpdate();
+  }
 }

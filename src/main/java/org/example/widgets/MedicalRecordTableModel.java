@@ -6,12 +6,10 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class MedicalRecordTableModel extends AbstractTableModel {
+  private final String[] columnNames = {"VisitDateTime", "Diagnosis", "Prescription"};
   private List<MedicalRecord> MedicalRecords;
-  private final String[] columnNames =
-      {"UserID", "HospitalID", "VisitDateTime", "Diagnosis", "Prescription", "MedicalRecordID"};
 
-  public MedicalRecordTableModel(List<MedicalRecord> MedicalRecords) {
-    this.MedicalRecords = MedicalRecords;
+  public MedicalRecordTableModel() {
   }
 
   @Override
@@ -33,12 +31,9 @@ public class MedicalRecordTableModel extends AbstractTableModel {
   public Object getValueAt(int rowIndex, int columnIndex) {
     MedicalRecord MedicalRecord = MedicalRecords.get(rowIndex);
     return switch (columnIndex) {
-      case 0 -> MedicalRecord.MedicalRecordID;
-      case 1 -> MedicalRecord.HospitalID;
-      case 2 -> MedicalRecord.VisitDateTime;
-      case 3 -> MedicalRecord.Diagnosis;
-      case 4 -> MedicalRecord.Prescription;
-      case 5 -> MedicalRecord.MedicalRecordID;
+      case 0 -> MedicalRecord.VisitDateTime;
+      case 1 -> MedicalRecord.Diagnosis;
+      case 2 -> MedicalRecord.Prescription;
       default -> null;
     };
   }
