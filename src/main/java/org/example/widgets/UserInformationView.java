@@ -203,7 +203,6 @@ public class UserInformationView extends Frame {
     userMedicalInformation.add(bloodPressureDiastolicAverageLabel); // average blood pressure diastolic 3years
     userMedicalInformation.add(new Label());
 
-
     panel1.add(userMedicalInformation);
 
     panel.add(panel1);
@@ -226,12 +225,10 @@ public class UserInformationView extends Frame {
     genderLabel.setText("Gender: " + users.get(0).gender);
     contactLabel.setText("Contact: " + users.get(0).contactNumber);
 
-
     setUserInformationLabel();
 
     repaint();
   }
-
 
   public void setUserInformationLabel() {
     try {
