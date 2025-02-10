@@ -20,12 +20,11 @@ public class MedicalRecordMain extends Frame {
   List<MedicalRecord> users;
   MedicalRecordTableModel medicalRecordTableModel;
   Long hospitalID;
-  Button button = new Button("new MedicalRecord");
   Button refreshButton = new Button("Refresh");
   private int userID;
 
   MedicalRecordMain() throws SQLException {
-    super("User Management");
+    super("Medical Record");
     setSize(600, 400);
 
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
@@ -45,25 +44,14 @@ public class MedicalRecordMain extends Frame {
 
    
     add(refreshButton, BorderLayout.NORTH);
-    add(button, BorderLayout.SOUTH);
-   
+
     JTable table = createTable();
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
-
-    setVisible(true);
-  }
-
-  public static void main(String[] args) throws SQLException {
-    var A = new MedicalRecordMain();
   }
 
   public void setHospitalID(int hospitalID) {
     this.hospitalID = 1L;
-  }
-
-  public void receiveEvent() {
-    log.info("Event received");
   }
 
   private JTable createTable() throws SQLException {
