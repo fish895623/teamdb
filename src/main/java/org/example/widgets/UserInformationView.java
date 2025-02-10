@@ -3,6 +3,7 @@ package org.example.widgets;
 import org.example.database.HealthDataDB;
 import org.example.database.UserDB;
 import org.example.model.User;
+import org.example.model.UserInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,14 @@ public class UserInformationView extends Frame {
   JLabel genderLabel;
   JLabel contactLabel;
 
+  Label heightLabel;
+  Label weightLabel;
+  Label bodyFatLabel;
+  Label bloodPressureSystolicLabel;
+  Label bloodPressureDiastolicLabel;
+  Label bloodPressureSystolicAverageLabel;
+  Label bloodPressureDiastolicAverageLabel;
+
   Button insertHealth;
   Button insertDiet;
   Button insertExercise;
@@ -43,7 +52,7 @@ public class UserInformationView extends Frame {
   ExerciseMain exerciseMain;
   MedicalRecordMain medicalRecordMain;
   HealthDataMain healthDataMain;
-
+  UserInformation userInformation;
   private List<User> users;
 
   private UserInformationView() {
@@ -68,6 +77,22 @@ public class UserInformationView extends Frame {
     birthDateLabel = new JLabel();
     genderLabel = new JLabel();
     contactLabel = new JLabel();
+
+    heightLabel = new Label();
+    weightLabel = new Label();
+    bodyFatLabel = new Label();
+    bloodPressureSystolicLabel = new Label();
+    bloodPressureDiastolicLabel = new Label();
+    bloodPressureSystolicAverageLabel = new Label();
+    bloodPressureDiastolicAverageLabel = new Label();
+
+    heightLabel.setAlignment(Label.RIGHT);
+    weightLabel.setAlignment(Label.RIGHT);
+    bodyFatLabel.setAlignment(Label.RIGHT);
+    bloodPressureSystolicLabel.setAlignment(Label.RIGHT);
+    bloodPressureDiastolicLabel.setAlignment(Label.RIGHT);
+    bloodPressureSystolicAverageLabel.setAlignment(Label.RIGHT);
+    bloodPressureDiastolicAverageLabel.setAlignment(Label.RIGHT);
 
     insertHealth.addActionListener(e -> {
       log.info("Insert Health button clicked");
@@ -141,31 +166,33 @@ public class UserInformationView extends Frame {
     panel.add(displayExercise);
     panel.add(displayMediaRecord);
 
-    Panel userMedicalInformation = new Panel(new GridLayout(0, 2));
+    Panel userMedicalInformation = new Panel(new GridLayout(0, 3));
     Panel panel1 = new Panel(new GridLayout(0, 1));
     var health_data = new Label("Health Data");
     health_data.setAlignment(Label.CENTER);
     panel1.add(health_data);
 
-    try {
-      var data = new HealthDataDB().getUserHealthData(users.get(0).userID);
-      userMedicalInformation.add(new Label("Height")); // latest height
-      userMedicalInformation.add(new Label(Float.toString(data.Height)));
-      userMedicalInformation.add(new Label("Weight")); // latest weight
-      userMedicalInformation.add(new Label(Float.toString(data.Weight)));
-      userMedicalInformation.add(new Label("BodyFatPercentage")); // latest body fat percentage
-      userMedicalInformation.add(new Label(Float.toString(data.BodyFatPercentage)));
-      userMedicalInformation.add(new Label("BloodPressureSystolic")); // latest blood pressure systolic
-      userMedicalInformation.add(new Label(Integer.toString(data.BloodPressureSystolic)));
-      userMedicalInformation.add(new Label("BloodPressureSystolic")); // average blood pressure systolic 3years
-      userMedicalInformation.add(new Label(Float.toString(data.BloodPressureSystolicAverage)));
-      userMedicalInformation.add(new Label("BloodPressureDiastolic")); // latest blood pressure diastolic
-      userMedicalInformation.add(new Label(Integer.toString(data.BloodPressureDiastolic)));
-      userMedicalInformation.add(new Label("BloodPressureDiastolic")); // average blood pressure diastolic 3years
-      userMedicalInformation.add(new Label(Float.toString(data.BloodPressureDiastolicAverage)));
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
+    userMedicalInformation.add(new Label("Height")); // latest height
+    userMedicalInformation.add(heightLabel); // latest height
+    userMedicalInformation.add(new Label());
+    userMedicalInformation.add(new Label("Weight")); // latest weight
+    userMedicalInformation.add(weightLabel); // latest weight
+    userMedicalInformation.add(new Label());
+    userMedicalInformation.add(new Label("BodyFatPercentage")); // latest body fat percentage
+    userMedicalInformation.add(bodyFatLabel); // latest body fat percentage
+    userMedicalInformation.add(new Label());
+    userMedicalInformation.add(new Label("BloodPressureSystolic")); // latest blood pressure systolic
+    userMedicalInformation.add(bloodPressureSystolicLabel); // latest blood pressure systolic
+    userMedicalInformation.add(new Label());
+    userMedicalInformation.add(new Label("BloodPressureSystolic")); // average blood pressure systolic 3years
+    userMedicalInformation.add(bloodPressureSystolicAverageLabel); // average blood pressure systolic 3years
+    userMedicalInformation.add(new Label());
+    userMedicalInformation.add(new Label("BloodPressureDiastolic")); // latest blood pressure diastolic
+    userMedicalInformation.add(bloodPressureDiastolicLabel); // latest blood pressure diastolic
+    userMedicalInformation.add(new Label());
+    userMedicalInformation.add(new Label("BloodPressureDiastolic")); // average blood pressure diastolic 3years
+    userMedicalInformation.add(bloodPressureDiastolicAverageLabel); // average blood pressure diastolic 3years
+    userMedicalInformation.add(new Label());
 
 
     panel1.add(userMedicalInformation);
@@ -189,7 +216,22 @@ public class UserInformationView extends Frame {
     genderLabel.setText("Gender: " + users.get(0).gender);
     contactLabel.setText("Contact: " + users.get(0).contactNumber);
 
+    userInformation = new HealthDataDB().getUserHealthData(userID);
+
+    setUserInformationLabel();
+
     repaint();
+  }
+
+  public void setUserInformationLabel() {
+    heightLabel.setText(String.format("%.2fcm", userInformation.Height));
+    weightLabel.setText(String.format("%.2fkg", userInformation.Weight));
+    bodyFatLabel.setText(String.format("%.2f%%", userInformation.BodyFatPercentage));
+    bloodPressureSystolicLabel.setText(String.format("%.2fmmHg", (float) userInformation.BloodPressureSystolic));
+    bloodPressureDiastolicLabel.setText(String.format("%.2fmmHg", (float) userInformation.BloodPressureDiastolic));
+    bloodPressureSystolicAverageLabel.setText(String.format("%.2fmmHg", userInformation.BloodPressureSystolicAverage));
+    bloodPressureDiastolicAverageLabel.setText(
+        String.format("%.2fmmHg", userInformation.BloodPressureDiastolicAverage));
   }
 
   private static class LazyHolder {
