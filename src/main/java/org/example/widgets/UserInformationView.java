@@ -154,8 +154,9 @@ public class UserInformationView extends Frame {
       medicalRecordMain.setVisible(true);
     });
 
-    GridLayout gridLayout = new GridLayout(0, 1);
-    Panel panel0 = new Panel(gridLayout);
+    Panel parent = new Panel(new GridLayout(0, 1));
+
+    Panel panel0 = new Panel(new GridLayout(0, 1));
     var labelInfo = new Label("User Information");
     labelInfo.setAlignment(Label.CENTER);
     panel0.add(labelInfo);
@@ -163,23 +164,24 @@ public class UserInformationView extends Frame {
     panel0.add(birthDateLabel);
     panel0.add(genderLabel);
     panel0.add(contactLabel);
+    parent.add(panel0);
 
-    Panel panel = new Panel();
-    panel.add(panel0);
-    panel.add(insertHealth);
-    panel.add(insertDiet);
-    panel.add(insertExercise);
-    panel.add(insertMediaRecord);
-    panel.add(displayHeathData);
-    panel.add(displayDiet);
-    panel.add(displayExercise);
-    panel.add(displayMediaRecord);
+    Panel panel1 = new Panel(new GridLayout(0, 1));
+    panel1.add(insertHealth);
+    panel1.add(insertDiet);
+    panel1.add(insertExercise);
+    panel1.add(insertMediaRecord);
+    panel1.add(displayHeathData);
+    panel1.add(displayDiet);
+    panel1.add(displayExercise);
+    panel1.add(displayMediaRecord);
+    parent.add(panel1);
 
     Panel userMedicalInformation = new Panel(new GridLayout(0, 3));
-    Panel panel1 = new Panel(new GridLayout(0, 1));
+    Panel panel2 = new Panel(new GridLayout(0, 1));
     var health_data = new Label("Health Data");
     health_data.setAlignment(Label.CENTER);
-    panel1.add(health_data);
+    panel2.add(health_data);
 
     userMedicalInformation.add(new Label("Height")); // latest height
     userMedicalInformation.add(heightLabel); // latest height
@@ -203,11 +205,11 @@ public class UserInformationView extends Frame {
     userMedicalInformation.add(bloodPressureDiastolicAverageLabel); // average blood pressure diastolic 3years
     userMedicalInformation.add(new Label());
 
-    panel1.add(userMedicalInformation);
+    panel2.add(userMedicalInformation);
 
-    panel.add(panel1);
+    parent.add(panel2);
 
-    add(panel);
+    add(parent);
   }
 
   public static UserInformationView getInstance() {
