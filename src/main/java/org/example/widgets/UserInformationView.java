@@ -33,6 +33,9 @@ public class UserInformationView extends Frame {
   Label bloodPressureSystolicAverageLabel;
   Label bloodPressureDiastolicAverageLabel;
 
+  Label bloodPressureSystolicWarningLabel;
+  Label bloodPressureDiastolicWarningLabel;
+
   Button insertHealth;
   Button insertDiet;
   Button insertExercise;
@@ -85,6 +88,8 @@ public class UserInformationView extends Frame {
     bloodPressureDiastolicLabel = new Label();
     bloodPressureSystolicAverageLabel = new Label();
     bloodPressureDiastolicAverageLabel = new Label();
+    bloodPressureDiastolicWarningLabel = new Label();
+    bloodPressureSystolicWarningLabel = new Label();
 
     heightLabel.setAlignment(Label.RIGHT);
     weightLabel.setAlignment(Label.RIGHT);
@@ -93,6 +98,8 @@ public class UserInformationView extends Frame {
     bloodPressureDiastolicLabel.setAlignment(Label.RIGHT);
     bloodPressureSystolicAverageLabel.setAlignment(Label.RIGHT);
     bloodPressureDiastolicAverageLabel.setAlignment(Label.RIGHT);
+    bloodPressureDiastolicWarningLabel.setAlignment(Label.RIGHT);
+    bloodPressureSystolicWarningLabel.setAlignment(Label.RIGHT);
 
     insertHealth.addActionListener(e -> {
       log.info("Insert Health button clicked");
