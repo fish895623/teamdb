@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class MedicalRecordDB {
             """);
         statement.setInt(1, medicalRecord.HospitalID);
         statement.setInt(2, medicalRecord.UserID);
-        statement.setString(3, medicalRecord.VisitDateTime.toString());
+        statement.setString(3, new SimpleDateFormat("yyyy-MM-dd").format(medicalRecord.VisitDateTime));
         statement.setString(4, medicalRecord.Diagnosis);
         statement.setString(5, medicalRecord.Prescription);
 
