@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.JLabel;
 import java.awt.Button;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Label;
@@ -33,6 +34,9 @@ public class UserInformationView extends Frame {
   Label bloodPressureSystolicAverageLabel;
   Label bloodPressureDiastolicAverageLabel;
 
+  Label bloodPressureSystolicWarningLabel;
+  Label bloodPressureDiastolicWarningLabel;
+
   Button insertHealth;
   Button insertDiet;
   Button insertExercise;
@@ -54,10 +58,11 @@ public class UserInformationView extends Frame {
   HealthDataMain healthDataMain;
   UserInformation userInformation;
   private List<User> users;
+  private int userID;
 
   private UserInformationView() {
     super("User Information");
-    setSize(300, 600);
+    setSize(500, 600);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent windowEvent) {
         dispose();
@@ -85,6 +90,8 @@ public class UserInformationView extends Frame {
     bloodPressureDiastolicLabel = new Label();
     bloodPressureSystolicAverageLabel = new Label();
     bloodPressureDiastolicAverageLabel = new Label();
+    bloodPressureDiastolicWarningLabel = new Label();
+    bloodPressureSystolicWarningLabel = new Label();
 
     heightLabel.setAlignment(Label.RIGHT);
     weightLabel.setAlignment(Label.RIGHT);
@@ -93,6 +100,8 @@ public class UserInformationView extends Frame {
     bloodPressureDiastolicLabel.setAlignment(Label.RIGHT);
     bloodPressureSystolicAverageLabel.setAlignment(Label.RIGHT);
     bloodPressureDiastolicAverageLabel.setAlignment(Label.RIGHT);
+    bloodPressureDiastolicWarningLabel.setAlignment(Label.CENTER);
+    bloodPressureSystolicWarningLabel.setAlignment(Label.CENTER);
 
     insertHealth.addActionListener(e -> {
       log.info("Insert Health button clicked");
@@ -145,8 +154,9 @@ public class UserInformationView extends Frame {
       medicalRecordMain.setVisible(true);
     });
 
-    GridLayout gridLayout = new GridLayout(0, 1);
-    Panel panel0 = new Panel(gridLayout);
+    Panel parent = new Panel(new GridLayout(0, 1));
+
+    Panel panel0 = new Panel(new GridLayout(0, 1));
     var labelInfo = new Label("User Information");
     labelInfo.setAlignment(Label.CENTER);
     panel0.add(labelInfo);
@@ -154,23 +164,24 @@ public class UserInformationView extends Frame {
     panel0.add(birthDateLabel);
     panel0.add(genderLabel);
     panel0.add(contactLabel);
+    parent.add(panel0);
 
-    Panel panel = new Panel();
-    panel.add(panel0);
-    panel.add(insertHealth);
-    panel.add(insertDiet);
-    panel.add(insertExercise);
-    panel.add(insertMediaRecord);
-    panel.add(displayHeathData);
-    panel.add(displayDiet);
-    panel.add(displayExercise);
-    panel.add(displayMediaRecord);
+    Panel panel1 = new Panel(new GridLayout(0, 1));
+    panel1.add(insertHealth);
+    panel1.add(insertDiet);
+    panel1.add(insertExercise);
+    panel1.add(insertMediaRecord);
+    panel1.add(displayHeathData);
+    panel1.add(displayDiet);
+    panel1.add(displayExercise);
+    panel1.add(displayMediaRecord);
+    parent.add(panel1);
 
     Panel userMedicalInformation = new Panel(new GridLayout(0, 3));
-    Panel panel1 = new Panel(new GridLayout(0, 1));
+    Panel panel2 = new Panel(new GridLayout(0, 1));
     var health_data = new Label("Health Data");
     health_data.setAlignment(Label.CENTER);
-    panel1.add(health_data);
+    panel2.add(health_data);
 
     userMedicalInformation.add(new Label("Height")); // latest height
     userMedicalInformation.add(heightLabel); // latest height
@@ -181,25 +192,24 @@ public class UserInformationView extends Frame {
     userMedicalInformation.add(new Label("BodyFatPercentage")); // latest body fat percentage
     userMedicalInformation.add(bodyFatLabel); // latest body fat percentage
     userMedicalInformation.add(new Label());
-    userMedicalInformation.add(new Label("BloodPressureSystolic")); // latest blood pressure systolic
+    userMedicalInformation.add(new Label("Systolic BP")); // latest blood pressure systolic
     userMedicalInformation.add(bloodPressureSystolicLabel); // latest blood pressure systolic
-    userMedicalInformation.add(new Label());
-    userMedicalInformation.add(new Label("BloodPressureSystolic")); // average blood pressure systolic 3years
-    userMedicalInformation.add(bloodPressureSystolicAverageLabel); // average blood pressure systolic 3years
-    userMedicalInformation.add(new Label());
+    userMedicalInformation.add(bloodPressureSystolicWarningLabel); // latest blood pressure systolic
     userMedicalInformation.add(new Label("BloodPressureDiastolic")); // latest blood pressure diastolic
     userMedicalInformation.add(bloodPressureDiastolicLabel); // latest blood pressure diastolic
+    userMedicalInformation.add(bloodPressureDiastolicWarningLabel);
+    userMedicalInformation.add(new Label("Systolic BP Average")); // average blood pressure systolic 3years
+    userMedicalInformation.add(bloodPressureSystolicAverageLabel); // average blood pressure systolic 3years
     userMedicalInformation.add(new Label());
-    userMedicalInformation.add(new Label("BloodPressureDiastolic")); // average blood pressure diastolic 3years
+    userMedicalInformation.add(new Label("Diastolic BP Average")); // average blood pressure diastolic 3years
     userMedicalInformation.add(bloodPressureDiastolicAverageLabel); // average blood pressure diastolic 3years
     userMedicalInformation.add(new Label());
 
+    panel2.add(userMedicalInformation);
 
-    panel1.add(userMedicalInformation);
+    parent.add(panel2);
 
-    panel.add(panel1);
-
-    add(panel);
+    add(parent);
   }
 
   public static UserInformationView getInstance() {
@@ -207,6 +217,7 @@ public class UserInformationView extends Frame {
   }
 
   public void setUserID(int userID) throws SQLException {
+    this.userID = userID;
     log.info("User ID: {}", userID);
     // Get user information from database
     users = new UserDB().findByUserID(userID);
@@ -216,14 +227,17 @@ public class UserInformationView extends Frame {
     genderLabel.setText("Gender: " + users.get(0).gender);
     contactLabel.setText("Contact: " + users.get(0).contactNumber);
 
-    userInformation = new HealthDataDB().getUserHealthData(userID);
-
     setUserInformationLabel();
 
     repaint();
   }
 
   public void setUserInformationLabel() {
+    try {
+      userInformation = new HealthDataDB().getUserHealthData(this.userID);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
     heightLabel.setText(String.format("%.2fcm", userInformation.Height));
     weightLabel.setText(String.format("%.2fkg", userInformation.Weight));
     bodyFatLabel.setText(String.format("%.2f%%", userInformation.BodyFatPercentage));
@@ -232,6 +246,50 @@ public class UserInformationView extends Frame {
     bloodPressureSystolicAverageLabel.setText(String.format("%.2fmmHg", userInformation.BloodPressureSystolicAverage));
     bloodPressureDiastolicAverageLabel.setText(
         String.format("%.2fmmHg", userInformation.BloodPressureDiastolicAverage));
+
+    if (userInformation.BloodPressureSystolic > 180) {
+      bloodPressureSystolicWarningLabel.setText("Severe");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(255, 0, 0)); // RED
+    } else if (userInformation.BloodPressureSystolic > 160) {
+      bloodPressureSystolicWarningLabel.setText("Moderate");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(255, 192, 203)); // PINK
+    } else if (userInformation.BloodPressureSystolic > 140) {
+      bloodPressureSystolicWarningLabel.setText("Mild");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(255, 165, 0)); // ORANGE
+    } else if (userInformation.BloodPressureSystolic > 120) {
+      bloodPressureSystolicWarningLabel.setText("Pre-hypertension");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(255, 255, 0)); // YELLOW
+    } else if (userInformation.BloodPressureSystolic > 90) {
+      bloodPressureSystolicWarningLabel.setText("Normal");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(0, 255, 0)); // GREEN
+    } else {
+      bloodPressureSystolicWarningLabel.setText("Low");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(0, 0, 255)); // BLUE
+    }
+
+    if (userInformation.BloodPressureDiastolic > 110) {
+      bloodPressureDiastolicWarningLabel.setText("Severe");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(255, 0, 0)); // RED
+    } else if (userInformation.BloodPressureDiastolic > 100) {
+      bloodPressureDiastolicWarningLabel.setText("Moderate");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(255, 192, 203)); // RED
+    } else if (userInformation.BloodPressureDiastolic > 90) {
+      bloodPressureDiastolicWarningLabel.setText("Mild");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(255, 165, 0)); // ORANGE
+    } else if (userInformation.BloodPressureDiastolic > 80) {
+      bloodPressureDiastolicWarningLabel.setText("Pre-hypertension");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(255, 255, 0)); // YELLOW
+    } else if (userInformation.BloodPressureDiastolic > 60) {
+      bloodPressureDiastolicWarningLabel.setText("Normal");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(0, 255, 0)); // GREEN
+    } else {
+      bloodPressureDiastolicWarningLabel.setText("Low");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(0, 0, 255)); // BLUE
+    }
+  }
+
+  public void refresh() {
+    setUserInformationLabel();
   }
 
   private static class LazyHolder {

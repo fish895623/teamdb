@@ -15,8 +15,6 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 
-import static java.lang.Thread.sleep;
-
 public class HealthDataMain extends Frame {
   @SuppressWarnings("unused")
   private static final Logger log = LoggerFactory.getLogger(HealthDataMain.class);
@@ -25,7 +23,7 @@ public class HealthDataMain extends Frame {
   HealthDataTableModel healthDataTableModel;
   private int userID = 0;
 
-  public HealthDataMain() {
+  HealthDataMain() {
     super("Health Data");
     setSize(900, 400);
     addWindowListener(new WindowAdapter() {
@@ -56,13 +54,6 @@ public class HealthDataMain extends Frame {
     JTable table = createTable();
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
-  }
-
-  public static void main(String[] args) throws InterruptedException {
-    var a = HealthDataMain.getInstance();
-    a.setUserID(2);
-    sleep(1000);
-    a.setVisible(true);
   }
 
   public static HealthDataMain getInstance() {

@@ -7,13 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.text.JTextComponent;
 import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Component;
 import java.awt.Frame;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -21,10 +16,9 @@ import java.util.List;
 
 public class DietMain extends Frame {
   private static final Logger log = LoggerFactory.getLogger(DietMain.class);
-  List<Diet> diets;
+  List<Diet> data;
   DietTableModel dietTableModel;
   Long hospitalID;
-  Button refreshButton = new Button("Refresh");
   int userID = 0;
 
   DietMain() throws SQLException {
@@ -33,48 +27,22 @@ public class DietMain extends Frame {
 
     addWindowListener(new WindowAdapter() {
       @Override
-      public void windowClosing(WindowEvent windowEvent) {
+      public void windowClosing(WindowEvent event) {
         dispose();
       }
 
       @Override
-      public void windowActivated(WindowEvent e) {
+      public void windowActivated(WindowEvent event) {
         log.info("Window activated");
-
         try {
-          this.refreshData();
-        } catch (SQLException e1) {
-          e1.printStackTrace();
+          refreshData();
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
         }
       }
-
-      private void refreshData() throws SQLException {
-        log.info("Refreshing data");
-        diets = new DietDB().findByUserID(userID);
-
-        repaint();
-      }
     });
 
-    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-      Component focusedComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-      if (!(focusedComponent instanceof JTextComponent)) {
-        if (e.getID() == KeyEvent.KEY_PRESSED) {
-          if (e.getKeyCode() == KeyEvent.VK_Q) {
-            System.exit(0);
-          }
-        }
-      }
-
-      return false;
-    });
-
-    add(refreshButton, BorderLayout.NORTH);
-    refreshButton.addActionListener(e -> {
-    });
-    diets = new DietDB().findByUserID(userID);
-    JTable table = createTable(diets);
+    JTable table = createTable();
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
   }
@@ -83,24 +51,30 @@ public class DietMain extends Frame {
     return LazyHolder.INSTANCE;
   }
 
-  public void setHospitalID(int hospitalID) {
-    this.hospitalID = 1L;
-  }
+  private void refreshData() throws SQLException {
+    log.info("Refreshing data");
+    data = new DietDB().findByUserID(userID);
+    dietTableModel.setData(data);
 
-  public void receiveEvent() {
-    log.info("Event received");
-  }
-
-  private JTable createTable(List<Diet> diets) throws SQLException {
-    dietTableModel = new DietTableModel();
-    dietTableModel.setData(diets);
-
-    return new JTable(dietTableModel);
+    repaint();
   }
 
   public void setUserID(int userID) {
     this.userID = userID;
   }
+
+  public JTable createTable() {
+    try {
+      data = new DietDB().findByUserID(userID);
+    } catch (Exception e) {
+      log.error("Error getting HealthData", e);
+    }
+    dietTableModel = new DietTableModel();
+    dietTableModel.setData(data);
+
+    return new JTable(dietTableModel);
+  }
+
 
   private static class LazyHolder {
     private static final DietMain INSTANCE;
