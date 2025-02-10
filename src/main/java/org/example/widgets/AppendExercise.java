@@ -1,6 +1,8 @@
 package org.example.widgets;
 
 import org.example.App;
+import org.example.filter.FloatFilter;
+import org.example.filter.IntegerFilter;
 import org.example.model.Exercise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -21,7 +24,6 @@ public class AppendExercise extends JFrame {
 
   private final JTextField caloriesBurned_text;
   private final JTextField duration_text;
-  private final JTextField userID_text;
   private final JTextField exerciseType_text;
 
   private final JButton submitButton;
@@ -48,8 +50,10 @@ public class AppendExercise extends JFrame {
 
     caloriesBurned_text = new JTextField(10);
     duration_text = new JTextField(10);
-    userID_text = new JTextField(10);
     exerciseType_text = new JTextField(10);
+
+    ((AbstractDocument) caloriesBurned_text.getDocument()).setDocumentFilter(new FloatFilter());
+    ((AbstractDocument) duration_text.getDocument()).setDocumentFilter(new IntegerFilter());
 
     submitButton = new JButton("Submit");
     cancelButton = new JButton("Cancel");
@@ -85,7 +89,6 @@ public class AppendExercise extends JFrame {
     // UI 추가 (GridBagLayout 사용)
     int row = 0;
 
-    addLabelAndComponent("User ID:", userID_text, gbc, row++);
     addLabelAndComponent("Exercise Type:", exerciseType_text, gbc, row++);
 
     // 날짜 선택 추가 (연도, 월, 일)
@@ -147,7 +150,6 @@ public class AppendExercise extends JFrame {
   public void submitButtonClicked() throws ParseException {
     log.info("Submit button clicked");
 
-    String uID = userID_text.getText();
     String Extype = exerciseType_text.getText();
     String year = (String) yearBox.getSelectedItem();
     String month = (String) monthBox.getSelectedItem();
@@ -157,7 +159,7 @@ public class AppendExercise extends JFrame {
 
     Exercise exercise = new Exercise();
     exercise.ExerciseDateTime = year + month + day;
-    exercise.UserID = Integer.parseInt(uID);
+    exercise.UserID = this.userID;
     exercise.ExerciseType = Extype;
     exercise.Duration = Integer.parseInt(duration);
     exercise.CaloriesBurned = Integer.parseInt(calBurn);
