@@ -7,13 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.text.JTextComponent;
 import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Component;
 import java.awt.Frame;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -23,8 +18,6 @@ public class ExerciseMain extends Frame {
   private static final Logger log = LoggerFactory.getLogger(ExerciseMain.class);
   List<Exercise> exercises;
   ExerciseTableModel exerciseTableModel;
-  Long hospitalID;
-  Button refreshButton = new Button("Refresh");
   int userID;
 
   ExerciseMain() throws SQLException {
@@ -38,44 +31,17 @@ public class ExerciseMain extends Frame {
       }
 
       @Override
-      public void windowActivated(WindowEvent e) {
+      public void windowActivated(WindowEvent event) {
         log.info("Window activated");
-
         try {
-          this.refreshData();
-        } catch (SQLException e1) {
-          e1.printStackTrace();
+          refreshData();
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
         }
       }
-
-      private void refreshData() throws SQLException {
-        log.info("Refreshing data");
-        exercises = new ExerciseDB().findByUserID(userID);
-
-        repaint();
-      }
     });
 
-    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-      Component focusedComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-      if (!(focusedComponent instanceof JTextComponent)) {
-        if (e.getID() == KeyEvent.KEY_PRESSED) {
-          if (e.getKeyCode() == KeyEvent.VK_Q) {
-            System.exit(0);
-          }
-        }
-      }
-
-      return false;
-    });
-
-    add(refreshButton, BorderLayout.NORTH);
-    refreshButton.addActionListener(e -> {
-
-    });
-    exercises = new ExerciseDB().findByUserID(userID);
-    JTable table = createTable(exercises);
+    JTable table = createTable();
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
   }
@@ -84,7 +50,16 @@ public class ExerciseMain extends Frame {
     return LazyHolder.INSTANCE;
   }
 
-  private JTable createTable(List<Exercise> exercises) {
+  private void refreshData() throws SQLException {
+    log.info("Refreshing data");
+    exercises = new ExerciseDB().findByUserID(userID);
+    exerciseTableModel.setExercise(exercises);
+
+    repaint();
+  }
+
+  private JTable createTable() throws SQLException {
+    exercises = new ExerciseDB().findByUserID(userID);
     exerciseTableModel = new ExerciseTableModel();
     exerciseTableModel.setExercise(exercises);
     return new JTable(exerciseTableModel);
