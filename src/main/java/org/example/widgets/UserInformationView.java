@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.JLabel;
 import java.awt.Button;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Label;
@@ -60,7 +61,7 @@ public class UserInformationView extends Frame {
 
   private UserInformationView() {
     super("User Information");
-    setSize(300, 600);
+    setSize(500, 600);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent windowEvent) {
         dispose();
@@ -98,8 +99,8 @@ public class UserInformationView extends Frame {
     bloodPressureDiastolicLabel.setAlignment(Label.RIGHT);
     bloodPressureSystolicAverageLabel.setAlignment(Label.RIGHT);
     bloodPressureDiastolicAverageLabel.setAlignment(Label.RIGHT);
-    bloodPressureDiastolicWarningLabel.setAlignment(Label.RIGHT);
-    bloodPressureSystolicWarningLabel.setAlignment(Label.RIGHT);
+    bloodPressureDiastolicWarningLabel.setAlignment(Label.CENTER);
+    bloodPressureSystolicWarningLabel.setAlignment(Label.CENTER);
 
     insertHealth.addActionListener(e -> {
       log.info("Insert Health button clicked");
@@ -190,13 +191,13 @@ public class UserInformationView extends Frame {
     userMedicalInformation.add(new Label());
     userMedicalInformation.add(new Label("BloodPressureSystolic")); // latest blood pressure systolic
     userMedicalInformation.add(bloodPressureSystolicLabel); // latest blood pressure systolic
-    userMedicalInformation.add(new Label());
+    userMedicalInformation.add(bloodPressureSystolicWarningLabel); // latest blood pressure systolic
     userMedicalInformation.add(new Label("BloodPressureSystolic")); // average blood pressure systolic 3years
     userMedicalInformation.add(bloodPressureSystolicAverageLabel); // average blood pressure systolic 3years
     userMedicalInformation.add(new Label());
     userMedicalInformation.add(new Label("BloodPressureDiastolic")); // latest blood pressure diastolic
     userMedicalInformation.add(bloodPressureDiastolicLabel); // latest blood pressure diastolic
-    userMedicalInformation.add(new Label());
+    userMedicalInformation.add(bloodPressureDiastolicWarningLabel);
     userMedicalInformation.add(new Label("BloodPressureDiastolic")); // average blood pressure diastolic 3years
     userMedicalInformation.add(bloodPressureDiastolicAverageLabel); // average blood pressure diastolic 3years
     userMedicalInformation.add(new Label());
@@ -239,6 +240,47 @@ public class UserInformationView extends Frame {
     bloodPressureSystolicAverageLabel.setText(String.format("%.2fmmHg", userInformation.BloodPressureSystolicAverage));
     bloodPressureDiastolicAverageLabel.setText(
         String.format("%.2fmmHg", userInformation.BloodPressureDiastolicAverage));
+
+    if (userInformation.BloodPressureSystolic > 180) {
+      bloodPressureSystolicWarningLabel.setText("Severe");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(255, 0, 0)); // RED
+    } else if (userInformation.BloodPressureSystolic > 160) {
+      bloodPressureSystolicWarningLabel.setText("Moderate");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(255, 192, 203)); // PINK
+    } else if (userInformation.BloodPressureSystolic > 140) {
+      bloodPressureSystolicWarningLabel.setText("Mild");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(255, 165, 0)); // ORANGE
+    } else if (userInformation.BloodPressureSystolic > 120) {
+      bloodPressureSystolicWarningLabel.setText("Pre-hypertension");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(255, 255, 0)); // YELLOW
+    } else if (userInformation.BloodPressureSystolic > 90) {
+      bloodPressureSystolicWarningLabel.setText("Normal");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(0, 255, 0)); // GREEN
+    } else {
+      bloodPressureSystolicWarningLabel.setText("Low");
+      bloodPressureSystolicWarningLabel.setBackground(new Color(0, 0, 255)); // BLUE
+    }
+
+    if (userInformation.BloodPressureDiastolic > 110) {
+      bloodPressureDiastolicWarningLabel.setText("Severe");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(255, 0, 0)); // RED
+    } else if (userInformation.BloodPressureDiastolic > 100) {
+      bloodPressureDiastolicWarningLabel.setText("Moderate");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(255, 192, 203)); // RED
+    } else if (userInformation.BloodPressureDiastolic > 90) {
+      bloodPressureDiastolicWarningLabel.setText("Mild");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(255, 165, 0)); // ORANGE
+    } else if (userInformation.BloodPressureDiastolic > 80) {
+      bloodPressureDiastolicWarningLabel.setText("Pre-hypertension");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(255, 255, 0)); // YELLOW
+    } else if (userInformation.BloodPressureDiastolic > 60) {
+      bloodPressureDiastolicWarningLabel.setText("Normal");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(0, 255, 0)); // GREEN
+    } else {
+      bloodPressureDiastolicWarningLabel.setText("Low");
+      bloodPressureDiastolicWarningLabel.setBackground(new Color(0, 0, 255)); // BLUE
+    }
+
   }
 
   private static class LazyHolder {
