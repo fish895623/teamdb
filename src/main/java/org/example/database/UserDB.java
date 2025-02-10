@@ -36,6 +36,7 @@ public class UserDB {
       user.birthDate = resultSet.getDate("BirthDate");
       user.gender = resultSet.getString("Gender");
       user.contactNumber = resultSet.getString("ContactNumber");
+      user.hospitalID = resultSet.getInt("HospitalID");
 
       users.add(user);
     }
@@ -47,7 +48,7 @@ public class UserDB {
     List<User> users = new ArrayList<>();
     Statement statement = db.createStatement();
     ResultSet resultSet = statement.executeQuery("""
-        SELECT UserID, Name, BirthDate, Gender, ContactNumber
+        SELECT UserID, Name, BirthDate, Gender, ContactNumber, HospitalID
         FROM User
         WHERE UserID =
         """ + userID + ";");
@@ -62,7 +63,8 @@ public class UserDB {
                u.Name,
                u.BirthDate,
                u.Gender,
-               u.ContactNumber
+               u.ContactNumber,
+               u.HospitalID
         FROM User u
         WHERE u.HospitalID = ?
         """);
@@ -74,8 +76,8 @@ public class UserDB {
 
   public void insert(User user) throws SQLException {
     var statement = db.prepareStatement("""
-        INSERT INTO User (Name, BirthDate, Gender, ContactNumber, Password)
-        VALUES (?, ?, ?, ?, ?);
+        INSERT INTO User (Name, BirthDate, Gender, ContactNumber, Password, HospitalID)
+        VALUES (?, ?, ?, ?, ?, ?);
         """);
     statement.setString(1, user.name);
     statement.setString(2, new SimpleDateFormat("yyyy-MM-dd").format(user.birthDate));
@@ -85,6 +87,7 @@ public class UserDB {
       user.password = "";
     }
     statement.setString(5, user.password);
+    statement.setInt(6, user.hospitalID);
     statement.executeUpdate();
   }
 }
