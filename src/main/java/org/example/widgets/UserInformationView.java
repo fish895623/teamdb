@@ -1,5 +1,6 @@
 package org.example.widgets;
 
+import org.example.database.HealthDataDB;
 import org.example.database.UserDB;
 import org.example.model.User;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public class UserInformationView extends Frame {
 
   private UserInformationView() {
     super("User Information");
-    setSize(300, 400);
+    setSize(300, 600);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent windowEvent) {
         dispose();
@@ -139,6 +140,37 @@ public class UserInformationView extends Frame {
     panel.add(displayDiet);
     panel.add(displayExercise);
     panel.add(displayMediaRecord);
+
+    Panel userMedicalInformation = new Panel(new GridLayout(0, 2));
+    Panel panel1 = new Panel(new GridLayout(0, 1));
+    var health_data = new Label("Health Data");
+    health_data.setAlignment(Label.CENTER);
+    panel1.add(health_data);
+
+    try {
+      var data = new HealthDataDB().getUserHealthData(users.get(0).userID);
+      userMedicalInformation.add(new Label("Height")); // latest height
+      userMedicalInformation.add(new Label(Float.toString(data.Height)));
+      userMedicalInformation.add(new Label("Weight")); // latest weight
+      userMedicalInformation.add(new Label(Float.toString(data.Weight)));
+      userMedicalInformation.add(new Label("BodyFatPercentage")); // latest body fat percentage
+      userMedicalInformation.add(new Label(Float.toString(data.BodyFatPercentage)));
+      userMedicalInformation.add(new Label("BloodPressureSystolic")); // latest blood pressure systolic
+      userMedicalInformation.add(new Label(Integer.toString(data.BloodPressureSystolic)));
+      userMedicalInformation.add(new Label("BloodPressureSystolic")); // average blood pressure systolic 3years
+      userMedicalInformation.add(new Label(Float.toString(data.BloodPressureSystolicAverage)));
+      userMedicalInformation.add(new Label("BloodPressureDiastolic")); // latest blood pressure diastolic
+      userMedicalInformation.add(new Label(Integer.toString(data.BloodPressureDiastolic)));
+      userMedicalInformation.add(new Label("BloodPressureDiastolic")); // average blood pressure diastolic 3years
+      userMedicalInformation.add(new Label(Float.toString(data.BloodPressureDiastolicAverage)));
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+
+    panel1.add(userMedicalInformation);
+
+    panel.add(panel1);
 
     add(panel);
   }
