@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -26,23 +28,12 @@ public class MedicalRecordMain extends Frame {
   MedicalRecordMain() throws SQLException {
     super("Medical Record");
     setSize(600, 400);
-
-    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-      Component focusedComponent =
-          KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-      if (!(focusedComponent instanceof JTextComponent)) {
-        if (e.getID() == KeyEvent.KEY_PRESSED) {
-          if (e.getKeyCode() == KeyEvent.VK_Q) {
-            System.exit(0);
-          }
-        }
+    addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent windowEvent) {
+        dispose();
       }
-
-      return false;
     });
 
-   
     add(refreshButton, BorderLayout.NORTH);
 
     JTable table = createTable();
